@@ -40,6 +40,18 @@
         <servlet-name>transferFundsServlet</servlet-name>
         <servlet-class>za.ac.tut.web.transferFundsServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>BackupServlet</servlet-name>
+        <servlet-class>za.ac.tut.web.BackupServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewANumberOfLoansServlet</servlet-name>
+        <servlet-class>za.ac.tut.web.ViewANumberOfLoansServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CountLoansServlet</servlet-name>
+        <servlet-class>za.ac.tut.web.CountLoansServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/RegisterServlet.do</url-pattern>
@@ -84,7 +96,6 @@
         <servlet-name>ViewLoansServlet</servlet-name>
         <servlet-class>za.ac.tut.web.ViewLoansServlet</servlet-class>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>ViewLoansServlet</servlet-name>
         <url-pattern>/ViewLoansServlet.do</url-pattern>
@@ -93,7 +104,6 @@
         <servlet-name>UpdateLoanStatusServlet</servlet-name>
         <servlet-class>za.ac.tut.web.UpdateLoanStatusServlet</servlet-class>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>UpdateLoanStatusServlet</servlet-name>
         <url-pattern>/UpdateLoanStatusServlet.do</url-pattern>
@@ -102,12 +112,22 @@
         <servlet-name>ViewTransactionsServlet</servlet-name>
         <servlet-class>za.ac.tut.web.ViewTransactionsServlet</servlet-class>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>ViewTransactionsServlet</servlet-name>
         <url-pattern>/ViewTransactionsServlet.do</url-pattern>
     </servlet-mapping>
-
+    <servlet-mapping>
+        <servlet-name>BackupServlet</servlet-name>
+        <url-pattern>/BackupServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewANumberOfLoansServlet</servlet-name>
+        <url-pattern>/ViewANumberOfLoansServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CountLoansServlet</servlet-name>
+        <url-pattern>/CountLoansServlet.do</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
