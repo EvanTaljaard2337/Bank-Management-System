@@ -47,5 +47,9 @@
                 }
             %>
         </table>
+        <ul>
+            <li><a href="index.html">Login page.</a></li>
+            <li><a href="loanOfficerDashboard.jsp">Dashboard</a></li>
+        </ul>
     </body>
 </html>

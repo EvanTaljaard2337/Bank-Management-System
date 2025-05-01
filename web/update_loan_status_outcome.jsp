@@ -16,9 +16,10 @@
         <h1>Update Loan Status outcome</h1>
         <%
             BmLoan loan = (BmLoan)request.getAttribute("loan");
+            String updateResult = (String)request.getAttribute("updateResult");
         %>
         <p>
-            Below is the updated loan and the new status.
+            <%=updateResult%>
         </p>
         <table>
             <th>Loan ID</th>
@@ -34,5 +35,9 @@
                 <td><%=loan.getBStatus()%></td>
             </tr>
         </table>
+        <ul>
+            <li><a href="index.html">Login page.</a></li>
+            <li><a href="loanOfficerDashboard.jsp">Dashboard</a></li>
+        </ul>
     </body>
 </html>
