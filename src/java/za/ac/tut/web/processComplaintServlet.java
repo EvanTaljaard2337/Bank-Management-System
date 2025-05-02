@@ -30,28 +30,38 @@ public class processComplaintServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String name = request.getParameter("customerName");
-        String complaintDetails = request.getParameter("complaintDetails");
-        
-        BmComplaint b = riseComplaint(complaintDetails,name);     
-        bct.create(b);   
-        RequestDispatcher disp = request.getRequestDispatcher("complaint_submision.jsp");
-        disp.forward(request, response);
+        try{
+            Integer customerId = Integer.parseInt(request.getParameter("customerId"));
+            String complaintDetails = request.getParameter("complaintDetails");
+            
+            BmComplaint b = riseComplaint(complaintDetails,customerId);     
+            bct.create(b);   
+            RequestDispatcher disp = request.getRequestDispatcher("complaint_submision.jsp");
+            disp.forward(request, response);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            request.setAttribute("errMsg", e.getMessage());
+            RequestDispatcher disp = request.getRequestDispatcher("error.jsp");
+            disp.forward(request, response);
+        }
     }
-    private BmComplaint riseComplaint(String complaintDetails,String name){
+    private BmComplaint riseComplaint(String complaintDetails,Integer customerId){
+        BmCustomer customer = bcr.find(customerId);
         
         BmComplaint bc = new BmComplaint();
         bc.setBDescription(complaintDetails);//setting customer complaint details
-        bc.setBCustomerid(customer(name));//setting the customer id
+        bc.setBCustomerid(customer);//setting the customer id
         bc.setBStatus("pending");//need to add status
         Date currentDate = new Date();
         bc.setBCreatedat(currentDate);
         return bc;
     }
      //Looking in a way to retrieve or see who is the customer creating the complaint
+    /*
     private BmCustomer customer(String name){
         BmCustomer c = bcr.findIdByName(name);
         c.getBCustomerid();
         return c;
-    }
+    }**/
 }
