@@ -7,6 +7,7 @@ package za.ac.tut.web;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import za.ac.tut.ejb.bl.BmLoanFacadeLocal;
+import za.ac.tut.ejb.bl.LoanProcedures;
 import za.ac.tut.entities.BmLoan;
 
 /**
@@ -28,16 +30,35 @@ public class UpdateLoanStatusServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String status = request.getParameter("status");
+         String status = request.getParameter("status");
         Integer loanID = Integer.parseInt(request.getParameter("id"));
+        String updateResult;
         
-        BmLoan loan = updateLoan(status, loanID);
+        try {
+            boolean success = lfl.updateLoanStatus(loanID, status);
+            if (success) {
+                updateResult = "Loan status updated successfully!";
+            } else {
+                updateResult = "Failed to update loan status. Loan not found.";
+            }
+        } catch (Exception e) {
+            updateResult = "Error updating loan status: " + e.getMessage();
+        }
+        
+        BmLoan loan = lfl.find(loanID);
+        request.setAttribute("updateResult", updateResult);
+        request.setAttribute("loan", loan);
+        
+        RequestDispatcher disp = request.getRequestDispatcher("update_loan_status_outcome.jsp");
+        disp.forward(request, response);
+        
+        /*BmLoan loan = updateLoan(status, loanID);
         
         request.setAttribute("loan", loan);
         RequestDispatcher disp = request.getRequestDispatcher("update_loan_status_outcome.jsp");
-        disp.forward(request, response);
+        disp.forward(request, response);*/
     }
-    private BmLoan updateLoan(String status, Integer loanID) {
+    /*private BmLoan updateLoan(String status, Integer loanID) {
         List<BmLoan> loans = lfl.findAll();
         BmLoan loan = new BmLoan();
         
@@ -53,9 +74,8 @@ public class UpdateLoanStatusServlet extends HttpServlet {
             loan = l;
             break;
         }
-    }
-
-        
+    }        
         return loan;
     }
+    */
 }

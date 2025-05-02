@@ -26,8 +26,8 @@
                     <td>Choose status: </td>
                     <td>
                         <select name="status">
-                            <option value="approved">Approved</option>
-                            <option value="rejected">Rejected</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Rejected">Rejected</option>
                         </select>
                     </td>
                 </tr>
@@ -37,5 +37,9 @@
                 </tr>
             </table>
         </form>
+        <ul>
+            <li><a href="index.html">Login page.</a></li>
+            <li><a href="loanOfficerDashboard.jsp">Dashboard</a></li>
+        </ul>
     </body>
 </html>

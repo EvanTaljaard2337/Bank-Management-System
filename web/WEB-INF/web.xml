@@ -41,6 +41,18 @@
         <servlet-class>za.ac.tut.web.transferFundsServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>BackupServlet</servlet-name>
+        <servlet-class>za.ac.tut.web.BackupServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewANumberOfLoansServlet</servlet-name>
+        <servlet-class>za.ac.tut.web.ViewANumberOfLoansServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>CountLoansServlet</servlet-name>
+        <servlet-class>za.ac.tut.web.CountLoansServlet</servlet-class>
+    </servlet> 
+    <servlet>
         <servlet-name>depositFundsServlet</servlet-name>
         <servlet-class>za.ac.tut.web.depositFundsServlet</servlet-class>
     </servlet>
@@ -121,6 +133,18 @@
         <url-pattern>/ViewTransactionsServlet.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
+        <servlet-name>BackupServlet</servlet-name>
+        <url-pattern>/BackupServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewANumberOfLoansServlet</servlet-name>
+        <url-pattern>/ViewANumberOfLoansServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CountLoansServlet</servlet-name>
+        <url-pattern>/CountLoansServlet.do</url-pattern>
+     </servlet-mapping>
+     <servlet-mapping>
         <servlet-name>depositFundsServlet</servlet-name>
         <url-pattern>/depositFundsServlet.do</url-pattern>
     </servlet-mapping>

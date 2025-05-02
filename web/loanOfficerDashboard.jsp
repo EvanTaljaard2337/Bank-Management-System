@@ -18,9 +18,23 @@
         %>
         <h1>Welcome, <%=l.getBFullname()%></h1>
         <p>
-            <a href="view_loans.jsp">Click here to view loans.</a>
+            Click <a href="view_loans.jsp">here</a> to view loans.
             <br>
-            <a href="update_loan_status.jsp">Click here to update loan status.</a>
+            Click <a href="update_loan_status.jsp">here</a> to update loan status.
+            <br>
+            Click <a href="count_loans.jsp">here</a> to count loans.
+            
         </p>
+        <br>
+        <p>
+            Click below to view Loan report.
+        </p>
+        <form action="LoanReportServlet.do" method="POST">
+            <table>
+                <tr>
+                    <td><input type="submit" value="VIEW REPORT"/></td>
+                </tr>
+            </table>
+        </form>
     </body>
 </html>
