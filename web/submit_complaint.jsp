@@ -75,11 +75,13 @@
         </style>
     </head>
     <body>
+        <%
+            String customerId = request.getParameter("customerId");
+        %>
         <div class="container">
             <h1>Submit a Complaint</h1>
-            <form action="processComplaintServlet.do" method="post">
-                <label for="customerName">Your Name:</label>
-                <input type="text" id="customerName" name="customerName" required>
+            <form action="processComplaintServlet.do" method="POST">
+                <input type="hidden" name="customerId" value="<%= customerId %>">
 
                 <label for="complaintDetails">Complaint Details:</label>
                 <textarea id="complaintDetails" name="complaintDetails" required></textarea>
