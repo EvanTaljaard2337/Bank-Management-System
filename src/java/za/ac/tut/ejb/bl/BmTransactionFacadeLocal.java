@@ -7,6 +7,7 @@ package za.ac.tut.ejb.bl;
 
 import java.util.List;
 import javax.ejb.Local;
+import za.ac.tut.entities.BmAccount;
 import za.ac.tut.entities.BmTransaction;
 
 /**
@@ -29,5 +30,6 @@ public interface BmTransactionFacadeLocal {
     List<BmTransaction> findRange(int[] range);
 
     int count();
-    
+   
+    public List<BmTransaction> findTransactionHistory(BmAccount Accountid);
 }
