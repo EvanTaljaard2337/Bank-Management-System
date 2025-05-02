@@ -40,6 +40,22 @@
         <servlet-name>transferFundsServlet</servlet-name>
         <servlet-class>za.ac.tut.web.transferFundsServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>depositFundsServlet</servlet-name>
+        <servlet-class>za.ac.tut.web.depositFundsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>withdrawFundsServlet</servlet-name>
+        <servlet-class>za.ac.tut.web.withdrawFundsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewTransactionsHistoryServlet</servlet-name>
+        <servlet-class>za.ac.tut.web.ViewTransactionsHistoryServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RetrieveAccountTypeServlet</servlet-name>
+        <servlet-class>za.ac.tut.web.RetrieveAccountTypeServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/RegisterServlet.do</url-pattern>
@@ -84,7 +100,6 @@
         <servlet-name>ViewLoansServlet</servlet-name>
         <servlet-class>za.ac.tut.web.ViewLoansServlet</servlet-class>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>ViewLoansServlet</servlet-name>
         <url-pattern>/ViewLoansServlet.do</url-pattern>
@@ -93,7 +108,6 @@
         <servlet-name>UpdateLoanStatusServlet</servlet-name>
         <servlet-class>za.ac.tut.web.UpdateLoanStatusServlet</servlet-class>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>UpdateLoanStatusServlet</servlet-name>
         <url-pattern>/UpdateLoanStatusServlet.do</url-pattern>
@@ -102,12 +116,26 @@
         <servlet-name>ViewTransactionsServlet</servlet-name>
         <servlet-class>za.ac.tut.web.ViewTransactionsServlet</servlet-class>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>ViewTransactionsServlet</servlet-name>
         <url-pattern>/ViewTransactionsServlet.do</url-pattern>
     </servlet-mapping>
-
+    <servlet-mapping>
+        <servlet-name>depositFundsServlet</servlet-name>
+        <url-pattern>/depositFundsServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>withdrawFundsServlet</servlet-name>
+        <url-pattern>/withdrawFundsServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewTransactionsHistoryServlet</servlet-name>
+        <url-pattern>/ViewTransactionsHistoryServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RetrieveAccountTypeServlet</servlet-name>
+        <url-pattern>/RetrieveAccountTypeServlet.do</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
