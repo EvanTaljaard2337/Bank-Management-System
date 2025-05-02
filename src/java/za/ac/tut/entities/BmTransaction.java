@@ -37,7 +37,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "BmTransaction.findByBTransactionid", query = "SELECT b FROM BmTransaction b WHERE b.bTransactionid = :bTransactionid")
     , @NamedQuery(name = "BmTransaction.findByBTransactiontype", query = "SELECT b FROM BmTransaction b WHERE b.bTransactiontype = :bTransactiontype")
     , @NamedQuery(name = "BmTransaction.findByBAmount", query = "SELECT b FROM BmTransaction b WHERE b.bAmount = :bAmount")
-    , @NamedQuery(name = "BmTransaction.findByBTransactiondate", query = "SELECT b FROM BmTransaction b WHERE b.bTransactiondate = :bTransactiondate")})
+    , @NamedQuery(name = "BmTransaction.findByBTransactiondate", query = "SELECT b FROM BmTransaction b WHERE b.bTransactiondate = :bTransactiondate")
+    
+})
 public class BmTransaction implements Serializable {
 
     private static final long serialVersionUID = 1L;
