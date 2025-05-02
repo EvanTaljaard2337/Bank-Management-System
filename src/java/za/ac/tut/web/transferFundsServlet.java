@@ -7,6 +7,7 @@ package za.ac.tut.web;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
+import java.util.Date;
 import javax.ejb.EJB;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import za.ac.tut.ejb.bl.BmAccountFacadeLocal;
 import za.ac.tut.ejb.bl.BmTransactionFacadeLocal;
 import za.ac.tut.entities.BmAccount;
+import za.ac.tut.entities.BmTransaction;
 
 /**
  *
@@ -33,7 +35,7 @@ public class transferFundsServlet extends HttpServlet {
         Integer fromAccountId = Integer.parseInt(request.getParameter("fromAccountId"));
         Integer toAccountId = Integer.parseInt(request.getParameter("toAccountId"));
         BigDecimal amount;
-
+        String transactionType = "Transfer";
         try {
             // Convert the amount from String to BigDecimal
             amount = new BigDecimal(request.getParameter("amount"));
@@ -70,10 +72,14 @@ public class transferFundsServlet extends HttpServlet {
             // Update recipient's account balance
             recipientAccount.setBBalance(recipientAccount.getBBalance().add(amount));
             bal.edit(recipientAccount); // Update recipient's account
-
+            
+            //Senders Account Update object
+            BmTransaction transaction =createTransaction(senderAccount,amount,transactionType);
             // Optionally, create a transaction record
-            // btfl.createTransaction(senderAccount, recipientAccount, amount); // Implement this method as needed
-
+            btfl.create(transaction); // Implement this method as needed
+            
+            BmTransaction transactionReceiver = createTransaction(recipientAccount,amount,transactionType);
+            btfl.create(transactionReceiver);
             // Redirect or forward to a success page
             request.setAttribute("successMessage", "Transfer successful!");
             request.getRequestDispatcher("successPage.jsp").forward(request, response);
@@ -82,5 +88,16 @@ public class transferFundsServlet extends HttpServlet {
             request.setAttribute("errMsg", "An error occurred while processing the transfer. Please try again.");
             request.getRequestDispatcher("error.jsp").forward(request, response);
         }
+    }
+    private BmTransaction createTransaction(BmAccount account,BigDecimal amount,String transactionType){
+        
+        Date transactionDate = new Date();
+        
+        BmTransaction transactionsAcount = new BmTransaction();
+        transactionsAcount.setBAccountid(account);
+        transactionsAcount.setBTransactiontype(transactionType);
+        transactionsAcount.setBAmount(amount);
+        transactionsAcount.setBTransactiondate(transactionDate);
+        return transactionsAcount;
     }
 }
