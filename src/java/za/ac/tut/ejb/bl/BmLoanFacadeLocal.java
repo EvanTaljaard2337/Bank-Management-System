@@ -30,5 +30,12 @@ public interface BmLoanFacadeLocal {
 
     int count();
     
+    List<BmLoan> findANumberOfLoans(Integer limit);
+    
+    Integer cntLoans(String filter);
+    
+    boolean updateLoanStatus(Integer loanId, String newStatus);
+    
+    
     
 }
