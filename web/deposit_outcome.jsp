@@ -1,15 +1,16 @@
 <%-- 
-    Document   : error
-    Created on : 05 Apr 2025, 21:14:18
+    Document   : deposit_outcome
+    Created on : 02 May 2025, 15:39:41
     Author     : Evan
 --%>
 
+<%@page import="za.ac.tut.entities.BmAccount"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Error Occurred</title>
+        <title>Deposit Outcome</title>
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -18,7 +19,7 @@
                 padding: 0;
             }
             .header {
-                background: #dc3545; /* Red color for error */
+                background: #007BFF;
                 color: white;
                 padding: 15px;
                 display: flex;
@@ -43,14 +44,20 @@
                 background-color: rgba(255,255,255,0.2);
             }
             .container {
-                display: flex;
                 max-width: 800px;
-                margin: 30px auto;
+                margin: 50px auto;
+                padding: 20px;
                 background: white;
                 border-radius: 10px;
                 box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-                padding: 40px;
                 text-align: center;
+            }
+            h1 {
+                color: #333;
+            }
+            p {
+                font-size: 18px;
+                margin: 20px 0;
             }
             .footer {
                 text-align: center;
@@ -60,26 +67,20 @@
                 font-size: 14px;
                 margin-top: 40px;
             }
-            .error-message {
-                color: #dc3545; /* Red color for error messages */
-                font-size: 18px;
-                margin-top: 20px;
-            }
         </style>
     </head>
     <body>
         <div class="header">
-            <h1>Error Page</h1>
+            <h1>Deposit Outcome</h1>
             <a href="index.html">Logout</a>
         </div>
         <div class="container">
-            <h2>An Error Occurred</h2>
             <%
-                String errMsg = (String) request.getAttribute("errMsg");
+                BmAccount accountDes = (BmAccount)request.getAttribute("accountName");
             %>
-            <p class="error-message">Debugger Logs:</p>
-            <p><b><%= errMsg %></b></p>
-            <p><a href="customer_dashboard.jsp">Go to Dashboard</a></p>
+            <h1>Deposit Successful!</h1>
+            <p>Money successfully deposited to <b><%= accountDes.getBAccounttype() %></b> account.</p>
+            <p><a href="customer_dashboard.jsp">Go to Home Page</a></p>
         </div>
         <div class="footer">
             &copy; 2025 Your Bank Name | Contact Support: support@yourbank.com | Phone: 123-456-7890

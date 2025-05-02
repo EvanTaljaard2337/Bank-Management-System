@@ -24,10 +24,10 @@ public class checkBalanceServlet extends HttpServlet {
     @EJB
     private BmAccountFacadeLocal bma;
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        Integer id = Integer.parseInt(request.getParameter("accountId"));
+        Integer id = Integer.parseInt(request.getParameter("customerId"));
         
         BmAccount account = getBalance(id);
         session.setAttribute("acountDetails",account);

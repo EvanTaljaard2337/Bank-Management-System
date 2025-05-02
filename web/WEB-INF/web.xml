@@ -51,6 +51,22 @@
     <servlet>
         <servlet-name>CountLoansServlet</servlet-name>
         <servlet-class>za.ac.tut.web.CountLoansServlet</servlet-class>
+    </servlet> 
+    <servlet>
+        <servlet-name>depositFundsServlet</servlet-name>
+        <servlet-class>za.ac.tut.web.depositFundsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>withdrawFundsServlet</servlet-name>
+        <servlet-class>za.ac.tut.web.withdrawFundsServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ViewTransactionsHistoryServlet</servlet-name>
+        <servlet-class>za.ac.tut.web.ViewTransactionsHistoryServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RetrieveAccountTypeServlet</servlet-name>
+        <servlet-class>za.ac.tut.web.RetrieveAccountTypeServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
@@ -127,6 +143,22 @@
     <servlet-mapping>
         <servlet-name>CountLoansServlet</servlet-name>
         <url-pattern>/CountLoansServlet.do</url-pattern>
+     </servlet-mapping>
+     <servlet-mapping>
+        <servlet-name>depositFundsServlet</servlet-name>
+        <url-pattern>/depositFundsServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>withdrawFundsServlet</servlet-name>
+        <url-pattern>/withdrawFundsServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ViewTransactionsHistoryServlet</servlet-name>
+        <url-pattern>/ViewTransactionsHistoryServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>RetrieveAccountTypeServlet</servlet-name>
+        <url-pattern>/RetrieveAccountTypeServlet.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

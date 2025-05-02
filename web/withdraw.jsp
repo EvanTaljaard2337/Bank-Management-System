@@ -1,15 +1,17 @@
 <%-- 
-    Document   : transfer
-    Created on : 07 Apr 2025, 18:03:04
+    Document   : withdraw
+    Created on : 01 May 2025, 13:51:18
     Author     : Evan
 --%>
-<%@page import="za.ac.tut.entities.BmCustomer"%>
+
+<%@page import="za.ac.tut.entities.BmAccount"%>
+<%@page import="java.util.List"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Transactions Page</title>
+        <title>Withdraw Money</title>
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -54,10 +56,6 @@
                 text-align: center;
                 color: #333;
             }
-            h2 {
-                color: #555;
-                margin-top: 20px;
-            }
             form {
                 background-color: #f9faff;
                 border: 1px solid #ccc;
@@ -71,6 +69,7 @@
                 margin-bottom: 8px;
                 font-weight: bold;
             }
+            select,
             input[type="text"],
             input[type="number"] {
                 width: calc(100% - 20px);
@@ -92,42 +91,38 @@
             input[type="submit"]:hover {
                 background-color: #218838;
             }
-            .view-history-link {
-                display: block;
-                text-align: center;
-                margin-top: 20px;
-                font-weight: bold; 
-                font-size: 18px;
-                color: #007bff;
-                text-decoration: none;
-            }
-            .view-history-link:hover {
-                text-decoration: underline;
-            }
         </style>
     </head>
     <body>
         <div class="header">
-            <h1>Transactions Page</h1>
+            <h1>Withdraw Money</h1>
             <a href="index.html">Logout</a>
         </div>
         <div class="container">
-            <div class="use-case">
-                <h2>Transfer Funds</h2>
-                <form action="transferFundsServlet.do" method="post">
-                    <label for="fromAccountId">From Account ID:</label>
-                    <input type="text" id="fromAccountId" name="fromAccountId" required>
-                    
-                    <label for="toAccountId">To Account ID:</label>
-                    <input type="text" id="toAccountId" name="toAccountId" required>
-                    
-                    <label for="amount">Amount:</label>
-                    <input type="number" id="amount" name="amount" required>
-                    
-                    <input type="submit" value="Transfer Funds">
-                </form>
-            </div>
+            <form action="withdrawFundsServlet.do" method="post">
+                <label for="withdrawAccountId">From Account:</label>
+                <select id="withdrawAccountId" name="withdrawAccountId" required>
+                    <option value="">Select Account</option>
+                    <%
+                        List<BmAccount> accounts = (List<BmAccount>)request.getAttribute("accountTypes");
+                        if (accounts != null && !accounts.isEmpty()) {
+                            for (BmAccount acc : accounts) {
+                    %>
+                        <option value="<%= acc.getBAccountid() %>"><%= acc.getBAccounttype() %></option>
+                    <%
+                            }
+                        } else {
+                    %>
+                        <option value="">No Accounts Available</option>
+                    <%
+                        }
+                    %>
+                </select>
+                
+                <label for="withdrawAmount">Amount:</label>
+                <input type="number" id="withdrawAmount" name="withdrawAmount" required>
+                
+                <input type="submit" value="Withdraw Money">
+            </form>
         </div>
     </body>
-</html>
-

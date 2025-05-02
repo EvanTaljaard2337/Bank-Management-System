@@ -1,15 +1,16 @@
 <%-- 
-    Document   : error
-    Created on : 05 Apr 2025, 21:14:18
+    Document   : withdraw_successful
+    Created on : 02 May 2025, 14:08:16
     Author     : Evan
 --%>
 
+<%@page import="java.math.BigDecimal"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Error Occurred</title>
+        <title>Withdrawal Successful</title>
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -18,7 +19,7 @@
                 padding: 0;
             }
             .header {
-                background: #dc3545; /* Red color for error */
+                background: #007BFF;
                 color: white;
                 padding: 15px;
                 display: flex;
@@ -43,13 +44,12 @@
                 background-color: rgba(255,255,255,0.2);
             }
             .container {
-                display: flex;
                 max-width: 800px;
-                margin: 30px auto;
+                margin: 50px auto;
                 background: white;
                 border-radius: 10px;
                 box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-                padding: 40px;
+                padding: 30px;
                 text-align: center;
             }
             .footer {
@@ -60,26 +60,22 @@
                 font-size: 14px;
                 margin-top: 40px;
             }
-            .error-message {
-                color: #dc3545; /* Red color for error messages */
-                font-size: 18px;
-                margin-top: 20px;
-            }
         </style>
     </head>
     <body>
         <div class="header">
-            <h1>Error Page</h1>
+            <h1>Withdrawal Confirmation</h1>
             <a href="index.html">Logout</a>
         </div>
         <div class="container">
-            <h2>An Error Occurred</h2>
+            <h1>Successful Withdrawal</h1>
             <%
-                String errMsg = (String) request.getAttribute("errMsg");
+                BigDecimal amountWithDraw = (BigDecimal)request.getAttribute("withdrawAmount");
+                String msg = (String)request.getAttribute("successMessage");
             %>
-            <p class="error-message">Debugger Logs:</p>
-            <p><b><%= errMsg %></b></p>
-            <p><a href="customer_dashboard.jsp">Go to Dashboard</a></p>
+            <p><b><%=msg%></b></p>
+            <p>Amount: R<b><%=amountWithDraw%></b></p>
+            <p><a href="customer_dashboard.jsp">Go To Home Page</a></p>
         </div>
         <div class="footer">
             &copy; 2025 Your Bank Name | Contact Support: support@yourbank.com | Phone: 123-456-7890
