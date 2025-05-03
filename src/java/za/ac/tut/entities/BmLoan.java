@@ -34,7 +34,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "BmLoan.findByBLoanid", query = "SELECT b FROM BmLoan b WHERE b.bLoanid = :bLoanid")
     , @NamedQuery(name = "BmLoan.findByBLoanamount", query = "SELECT b FROM BmLoan b WHERE b.bLoanamount = :bLoanamount")
     , @NamedQuery(name = "BmLoan.findByBInterestrate", query = "SELECT b FROM BmLoan b WHERE b.bInterestrate = :bInterestrate")
-    , @NamedQuery(name = "BmLoan.findByBStatus", query = "SELECT b FROM BmLoan b WHERE b.bStatus = :bStatus")})
+    , @NamedQuery(name = "BmLoan.findByBStatus", query = "SELECT b FROM BmLoan b WHERE b.bStatus = :bStatus")
+    ,@NamedQuery(name = "BmLoan.findByBLoanType", query = "SELECT b FROM BmLoan b WHERE b.bLoanType = :bLoanType")})
 public class BmLoan implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -60,7 +61,13 @@ public class BmLoan implements Serializable {
     @JoinColumn(name = "B_CUSTOMERID", referencedColumnName = "B_CUSTOMERID")
     @ManyToOne(optional = false)
     private BmCustomer bCustomerid;
-
+    
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 50) // Adjust size as needed
+    @Column(name = "B_LOANTYPE")
+    private String bLoanType; // New field for loan type
+        
     public BmLoan() {
     }
 
@@ -68,11 +75,20 @@ public class BmLoan implements Serializable {
         this.bLoanid = bLoanid;
     }
 
-    public BmLoan(Integer bLoanid, BigDecimal bLoanamount, BigDecimal bInterestrate, String bStatus) {
+    public BmLoan(Integer bLoanid, BigDecimal bLoanamount, BigDecimal bInterestrate, String bStatus ,String bLoanType) {
         this.bLoanid = bLoanid;
         this.bLoanamount = bLoanamount;
         this.bInterestrate = bInterestrate;
         this.bStatus = bStatus;
+        this.bLoanType=bLoanType;
+    }
+
+    public String getbLoanType() {
+        return bLoanType;
+    }
+
+    public void setbLoanType(String bLoanType) {
+        this.bLoanType = bLoanType;
     }
 
     public Integer getBLoanid() {
