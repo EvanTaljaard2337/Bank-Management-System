@@ -85,19 +85,7 @@
         <form action="ApplyForLoanServlet.do" method="POST">
             <label for="fullName">Full Name</label>
             <input type="text" id="fullName" name="fullName" required />
-
-            <label for="dob">Date of Birth</label>
-            <input type="date" id="dob" name="dob" required />
-
-            <label for="email">Email Address</label>
-            <input type="email" id="email" name="email" required />
-
-            <label for="phone">Phone Number</label>
-            <input type="text" id="phone" name="phone" required />
-
-            <label for="address">Residential Address</label>
-            <textarea id="address" name="address" rows="3" required></textarea>
-
+            
             <label for="loanAmount">Loan Amount Requested (Rand)</label>
             <input type="number" id="loanAmount" name="loanAmount" min="1000" step="100" required />
 
@@ -111,31 +99,6 @@
                 <option value="business">Business Loan</option>
                 <option value="debt">Debt Consolidation Loan</option>
             </select>
-
-            <label for="loanPurpose">Purpose of the Loan</label>
-            <select id="loanPurpose" name="loanPurpose" required>
-                <option value="">-- Please select --</option>
-                <option value="home">Home Renovation</option>
-                <option value="car">Car Purchase</option>
-                <option value="education">Education</option>
-                <option value="business">Business</option>
-                <option value="debt">Debt Consolidation</option>
-                <option value="other">Other</option>
-            </select>
-
-            <label for="employmentStatus">Employment Status</label>
-            <select id="employmentStatus" name="employmentStatus" required>
-                <option value="">-- Please select --</option>
-                <option value="employed">Employed</option>
-                <option value="self-employed">Self-Employed</option>
-                <option value="unemployed">Unemployed</option>
-                <option value="student">Student</option>
-                <option value="retired">Retired</option>
-            </select>
-
-            <label for="annualIncome">Annual Income (Rand)</label>
-            <input type="number" id="annualIncome" name="annualIncome" min="0" step="1000" required />
-
             <button type="submit">Submit Application</button>
         </form>
     </body>
