@@ -31,7 +31,7 @@ public class ViewANumberOfLoansServlet extends HttpServlet {
             throws ServletException, IOException {
         Integer numOfLoans = Integer.parseInt(request.getParameter("num"));
         List<BmLoan> loans = lfl.findANumberOfLoans(numOfLoans);
-        
+        //Need updated code from the ejb module
         request.setAttribute("loans", loans);
         RequestDispatcher disp = request.getRequestDispatcher("find_number_of_loans_outcome.jsp");
         disp.forward(request, response);

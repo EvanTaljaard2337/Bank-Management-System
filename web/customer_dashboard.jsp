@@ -134,7 +134,6 @@
     <body>
         <%
             BmCustomer c = (BmCustomer)session.getAttribute("customer");  
-
         %>
         <div class="header">
             <h1>Welcome, <%=c.getBFullname()%></h1>
@@ -149,6 +148,9 @@
                 <p><a href="complaint.jsp?customerId=<%= c.getBCustomerid() %>">&#9888; Lodge Complaint</a></p>
                 <p><a href="ViewTransactionsHistoryServlet.do?customerId=<%= c.getBCustomerid() %>">&#128221; View Transactions</a></p>
                 <p><a href="checkBalanceServlet.do?customerId=<%= c.getBCustomerid() %>">&#128179; Account Balance</a></p>
+                <h2>Loan Application</h2>
+                <p><a href="loanApplication.jsp">&#128179; Apply for a Loan</a></p>
+                <p><a href="loanStatus.do?customerId=<%= c.getBCustomerid() %>">&#128221; View Loan Status</a></p>
             </div>
             <div class="content">
                 <h2>Dashboard Overview</h2>

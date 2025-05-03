@@ -9,6 +9,10 @@
         <servlet-class>za.ac.tut.web.FindCustomerServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>ApplyForLoanServlet</servlet-name>
+        <servlet-class>za.ac.tut.web.ApplyForLoanServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>ViewComplaintStatusServlet</servlet-name>
         <servlet-class>za.ac.tut.web.ViewComplaintStatusServlet</servlet-class>
     </servlet>
@@ -67,6 +71,10 @@
     <servlet>
         <servlet-name>RetrieveAccountTypeServlet</servlet-name>
         <servlet-class>za.ac.tut.web.RetrieveAccountTypeServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>loanStatus</servlet-name>
+        <servlet-class>za.ac.tut.web.loanStatus</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
@@ -159,6 +167,14 @@
     <servlet-mapping>
         <servlet-name>RetrieveAccountTypeServlet</servlet-name>
         <url-pattern>/RetrieveAccountTypeServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ApplyForLoanServlet</servlet-name>
+        <url-pattern>/ApplyForLoanServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>loanStatus</servlet-name>
+        <url-pattern>/loanStatus.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
