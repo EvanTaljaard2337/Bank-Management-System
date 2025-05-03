@@ -5,10 +5,14 @@
  */
 package za.ac.tut.ejb.bl;
 
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import za.ac.tut.entities.BmAccount;
+import za.ac.tut.entities.BmCustomer;
+import za.ac.tut.entities.BmLoan;
 
 /**
  *
@@ -28,5 +32,10 @@ public class BmAccountFacade extends AbstractFacade<BmAccount> implements BmAcco
     public BmAccountFacade() {
         super(BmAccount.class);
     }
-    
+    @Override
+    public List<BmAccount> findAccountsByCustId(BmCustomer customerId){
+        TypedQuery<BmAccount> query = em.createQuery("SELECT b FROM BmAccount b WHERE b.bCustomerid = :customersId", BmAccount.class);
+        query.setParameter("customersId",customerId); // Correctly bind the parameter
+        return query.getResultList();
+    }
 }
