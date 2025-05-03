@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Register User Acount</title>
+        <title>Register User Account</title>
                 <style>
             body {
                 font-family: Arial, sans-serif;

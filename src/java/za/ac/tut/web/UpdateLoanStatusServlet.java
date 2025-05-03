@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import za.ac.tut.ejb.bl.BmLoanFacadeLocal;
-import za.ac.tut.ejb.bl.LoanProcedures;
 import za.ac.tut.entities.BmLoan;
 
 /**
