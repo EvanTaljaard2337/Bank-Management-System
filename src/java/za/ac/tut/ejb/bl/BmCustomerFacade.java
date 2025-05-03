@@ -46,4 +46,11 @@ public class BmCustomerFacade extends AbstractFacade<BmCustomer> implements BmCu
         List<BmCustomer> results = query.getResultList();
         return results.isEmpty() ? null : results.get(0);
     }
+    @Override
+    public BmCustomer findFullName(String fullName){
+        TypedQuery<BmCustomer> query = em.createNamedQuery("BmCustomer.findByBFullname", BmCustomer.class);
+        query.setParameter("bFullname", fullName); // Correctly bind the parameter
+        List<BmCustomer> results = query.getResultList();
+        return results.isEmpty() ? null : results.get(0);
+    }
 }
