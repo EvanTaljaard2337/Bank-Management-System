@@ -151,6 +151,8 @@
                 <h2>Loan Application</h2>
                 <p><a href="loanApplication.jsp">&#128179; Apply for a Loan</a></p>
                 <p><a href="loanStatus.do?customerId=<%= c.getBCustomerid() %>">&#128221; View Loan Status</a></p>
+               <h2>Create an Account</h2>
+                <p><a href="selectAccountType.jsp?customerId=<%= c.getBCustomerid() %>">&#128179; Create an Account</a></p>
             </div>
             <div class="content">
                 <h2>Dashboard Overview</h2>
