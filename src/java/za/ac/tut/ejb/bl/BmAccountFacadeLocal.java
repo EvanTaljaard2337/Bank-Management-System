@@ -8,6 +8,7 @@ package za.ac.tut.ejb.bl;
 import java.util.List;
 import javax.ejb.Local;
 import za.ac.tut.entities.BmAccount;
+import za.ac.tut.entities.BmCustomer;
 
 /**
  *
@@ -30,4 +31,5 @@ public interface BmAccountFacadeLocal {
 
     int count();
     
+    public List<BmAccount> findAccountsByCustId(BmCustomer customerId);
 }
