@@ -33,4 +33,6 @@ public interface BmCustomerFacadeLocal {
     BmCustomer findByEmailAndPassword(String email,String password);
     
     BmCustomer findIdByName(String name);
+    
+    BmCustomer findFullName(String fullName);
 }
