@@ -55,7 +55,7 @@
     <servlet>
         <servlet-name>CountLoansServlet</servlet-name>
         <servlet-class>za.ac.tut.web.CountLoansServlet</servlet-class>
-    </servlet> 
+    </servlet>
     <servlet>
         <servlet-name>depositFundsServlet</servlet-name>
         <servlet-class>za.ac.tut.web.depositFundsServlet</servlet-class>
@@ -75,6 +75,10 @@
     <servlet>
         <servlet-name>loanStatus</servlet-name>
         <servlet-class>za.ac.tut.web.loanStatus</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>createAccount</servlet-name>
+        <servlet-class>za.ac.tut.web.createAccount</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
@@ -151,8 +155,8 @@
     <servlet-mapping>
         <servlet-name>CountLoansServlet</servlet-name>
         <url-pattern>/CountLoansServlet.do</url-pattern>
-     </servlet-mapping>
-     <servlet-mapping>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>depositFundsServlet</servlet-name>
         <url-pattern>/depositFundsServlet.do</url-pattern>
     </servlet-mapping>
@@ -175,6 +179,10 @@
     <servlet-mapping>
         <servlet-name>loanStatus</servlet-name>
         <url-pattern>/loanStatus.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>createAccount</servlet-name>
+        <url-pattern>/createAccount.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
