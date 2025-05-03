@@ -18,7 +18,9 @@ import javax.ejb.TransactionAttributeType;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import za.ac.tut.entities.BmAccount;
+import za.ac.tut.entities.BmCustomer;
 import za.ac.tut.entities.BmLoan;
 
 /**
@@ -94,6 +96,12 @@ public class BmLoanFacade extends AbstractFacade<BmLoan> implements BmLoanFacade
         } catch (Exception e) {
             throw new EJBException("Failed to update loan status", e);
         }
+    }
+    @Override
+    public List<BmLoan> findLoansByCustId(BmCustomer customerId){
+        TypedQuery<BmLoan> query = em.createQuery("SELECT b FROM BmLoan b WHERE b.bCustomerid = :customersId", BmLoan.class);
+        query.setParameter("customersId",customerId); // Correctly bind the parameter
+        return query.getResultList();
     }
     
 }
