@@ -1,6 +1,6 @@
 <%-- 
-    Document   : update_loan_status
-    Created on : 07 Apr 2025, 8:58:28 PM
+    Document   : loan_report
+    Created on : 03 May 2025, 3:18:15 PM
     Author     : thand
 --%>
 
@@ -9,7 +9,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Update Loan Status</title>
+        <title>Loan Report | Bank Management System</title>
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -43,55 +43,29 @@
                 background-color: rgba(255,255,255,0.2);
             }
             .container {
-                max-width: 600px;
+                max-width: 1000px;
                 margin: 30px auto;
                 background: white;
                 border-radius: 10px;
                 box-shadow: 0 4px 15px rgba(0,0,0,0.1);
                 padding: 30px;
             }
-            .form-title {
+            .report-title {
+                color: #007BFF;
                 margin-top: 0;
-                color: #333;
+                text-align: center;
             }
-            .form-instruction {
-                font-size: 16px;
-                margin-bottom: 20px;
+            .report-message {
+                font-size: 18px;
                 color: #555;
+                text-align: center;
+                margin-bottom: 30px;
             }
-            .form-group {
-                margin-bottom: 20px;
-            }
-            .form-group label {
-                display: block;
-                margin-bottom: 8px;
-                font-weight: bold;
-                color: #333;
-            }
-            .form-group input[type="text"],
-            .form-group select {
-                width: 100%;
-                padding: 10px;
-                border: 1px solid #ddd;
-                border-radius: 4px;
-                font-size: 16px;
-            }
-            .form-group select {
-                height: 40px;
-            }
-            .submit-btn {
-                background: #007BFF;
-                color: white;
-                border: none;
-                padding: 12px;
-                border-radius: 4px;
-                cursor: pointer;
-                font-size: 16px;
-                width: 100%;
-                transition: background-color 0.3s;
-            }
-            .submit-btn:hover {
-                background-color: #0056b3;
+            .report-content {
+                padding: 20px;
+                background-color: #f9f9f9;
+                border-radius: 5px;
+                border: 1px solid #e0e0e0;
             }
             .nav-links {
                 margin-top: 30px;
@@ -115,34 +89,40 @@
                 font-size: 14px;
                 margin-top: 40px;
             }
+            @media print {
+                .header, .footer, .nav-links {
+                    display: none;
+                }
+                .container {
+                    box-shadow: none;
+                    margin: 0;
+                    padding: 0;
+                }
+            }
         </style>
     </head>
     <body>
         <div class="header">
-            <h1>Loan Status Update</h1>
+            <h1>Loan Report</h1>
             <a href="index.html">Logout</a>
         </div>
         <div class="container">
-            <h2 class="form-title">Update Loan Status</h2>
-            <p class="form-instruction">Provide loan ID of the loan to update.</p>
-            <form action="UpdateLoanStatusServlet.do" method="POST">
-                <div class="form-group">
-                    <label for="id">Loan ID:</label>
-                    <input type="text" name="id" id="id" required/>
+            <h2 class="report-title">Loan Portfolio Report</h2>
+            <p class="report-message">This is your comprehensive loan report</p>
+            
+            <div class="report-content">
+                <!-- Report content would be dynamically inserted here -->
+                <p>Report generated on: <%= new java.util.Date() %></p>
+                
+                <!-- Placeholder for report data - would be replaced with actual data -->
+                <div style="text-align: center; color: #777; padding: 40px 0;">
+                    
                 </div>
-                <div class="form-group">
-                    <label for="status">Choose status:</label>
-                    <select name="status" id="status">
-                        <option value="Approved">Approved</option>
-                        <option value="Rejected">Rejected</option>
-                    </select>
-                </div>
-                <input type="submit" value="UPDATE" class="submit-btn"/>
-            </form>
+            </div>
             
             <div class="nav-links">
-                <a href="index.html">Login page</a>
-                <a href="loanOfficerDashboard.jsp">Dashboard</a>
+                <a href="loanOfficerDashboard.jsp">Back to Dashboard</a>
+                <a href="index.html">Home Page</a>
             </div>
         </div>
         <div class="footer">
