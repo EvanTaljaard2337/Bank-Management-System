@@ -6,6 +6,8 @@
 package za.ac.tut.ejb.bl;
 
 import static com.sun.tools.javac.tree.TreeInfo.name;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -40,4 +42,38 @@ public class BmTransactionFacade extends AbstractFacade<BmTransaction> implement
         query.setParameter("Accountid",Accountid); // Correctly bind the parameter
         return query.getResultList();
     }
+    
+ @Override
+    public double getTotalDeposits(LocalDate startDate, LocalDate endDate) {
+        TypedQuery<BigDecimal> query = em.createQuery(
+            "SELECT SUM(t.bAmount) FROM BmTransaction t WHERE t.bTransactiontype = 'Deposit' AND t.bTransactiondate BETWEEN :startDate AND :endDate", 
+            BigDecimal.class);
+        query.setParameter("startDate", java.sql.Date.valueOf(startDate));
+        query.setParameter("endDate", java.sql.Date.valueOf(endDate));
+        
+        BigDecimal result = query.getSingleResult();
+        return result!=null ? result.doubleValue():0.0;
+    }
+
+    @Override
+    public double getTotalWithdrawals(LocalDate startDate, LocalDate endDate) {
+        TypedQuery<BigDecimal> query = em.createQuery(
+            "SELECT SUM(t.bAmount) FROM BmTransaction t WHERE t.bTransactiontype = 'Withdrawal' AND t.bTransactiondate BETWEEN :startDate AND :endDate", 
+            BigDecimal.class);
+        query.setParameter("startDate", java.sql.Date.valueOf(startDate));
+        query.setParameter("endDate", java.sql.Date.valueOf(endDate));
+        BigDecimal result = query.getSingleResult();
+        return result!=null ? result.doubleValue():0.0;
+    }
+
+    @Override
+    public int getTotalTransactions(LocalDate startDate, LocalDate endDate) {
+        TypedQuery<Long> query = em.createQuery(
+            "SELECT COUNT(t) FROM BmTransaction t WHERE t.bTransactiondate BETWEEN :startDate AND :endDate", 
+            Long.class);
+        query.setParameter("startDate", java.sql.Date.valueOf(startDate));
+        query.setParameter("endDate", java.sql.Date.valueOf(endDate));
+        return query.getSingleResult() != null ? query.getSingleResult().intValue() : 0;
+    }
+    
 }
