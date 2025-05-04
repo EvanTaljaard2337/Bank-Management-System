@@ -67,6 +67,7 @@ public class BmComplaint implements Serializable {
 
     public BmComplaint(Integer bComplaintid) {
         this.bComplaintid = bComplaintid;
+             
     }
 
     public BmComplaint(Integer bComplaintid, String bDescription, String bStatus) {
