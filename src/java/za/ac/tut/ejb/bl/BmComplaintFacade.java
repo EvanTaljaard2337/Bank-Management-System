@@ -45,4 +45,5 @@ public class BmComplaintFacade extends AbstractFacade<BmComplaint> implements Bm
         query.setParameter("customerId", customer);
         return query.getResultList();
     }
+
 }
