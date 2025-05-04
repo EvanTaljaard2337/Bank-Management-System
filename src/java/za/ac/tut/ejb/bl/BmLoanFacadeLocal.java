@@ -5,6 +5,7 @@
  */
 package za.ac.tut.ejb.bl;
 
+import java.time.LocalDate;
 import java.util.List;
 import javax.ejb.Local;
 import za.ac.tut.entities.BmCustomer;
@@ -38,5 +39,7 @@ public interface BmLoanFacadeLocal {
     boolean updateLoanStatus(Integer loanId, String newStatus);
     
     List<BmLoan> findLoansByCustId(BmCustomer customerId);
+    
+    double getOutstandingLoans(BmCustomer customerId, String loanStatus);
     
 }
