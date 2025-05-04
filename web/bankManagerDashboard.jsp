@@ -1,16 +1,10 @@
-<%-- 
-    Document   : bankManagerDashboard
-    Created on : 05 Apr 2025, 21:08:06
-    Author     : Evan
---%>
-
 <%@page import="za.ac.tut.entities.BmBankManager"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Bank Management DashBoard</title>
+        <title>Bank Management Dashboard</title>
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -56,15 +50,23 @@
                 margin-bottom: 25px;
                 color: #333;
             }
+            .options {
+                margin-top: 20px;
+            }
+            .options h3 {
+                margin-bottom: 15px;
+            }
             .action-link {
-                display: inline-block;
+                display: block; /* Changed from inline-block to block */
                 background: #007BFF;
                 color: white;
                 text-decoration: none;
                 padding: 12px 25px;
                 border-radius: 5px;
                 transition: background-color 0.3s;
-                margin-top: 20px;
+                margin-top: 10px; /* Added margin for vertical spacing */
+                width: fit-content;
+                min-width: 200px;
             }
             .action-link:hover {
                 background-color: #0056b3;
@@ -90,7 +92,16 @@
             %>
             <h2 class="welcome-message">Welcome, <%=m.getBFullname()%></h2>
             <p>You can view and manage all bank transactions from this dashboard.</p>
-            <a href="view_transactions.jsp" class="action-link">View Transactions</a>
+            
+            <div class="options">
+                <h3>Available Actions:</h3>
+                <a href="view_transactions.jsp" class="action-link">View Transactions</a>
+                <a href="generate_summary_report.jsp" class="action-link">Generate Summary Report</a>
+                <a href="generate_transaction_report.jsp" class="action-link">Generate Transaction Report</a>
+                <a href="generate_loan_report.jsp" class="action-link">Generate Loan Report</a>
+                <a href="generate_complaint_report.jsp" class="action-link">Generate Complaint Report</a>
+                <a href="user_activity_report.jsp" class="action-link">User Activity Report</a>
+            </div>
         </div>
         <div class="footer">
             &copy; 2025 Your Bank Name | Manager Portal
