@@ -5,6 +5,7 @@
  */
 package za.ac.tut.ejb.bl;
 
+import java.time.LocalDate;
 import java.util.List;
 import javax.ejb.Local;
 import za.ac.tut.entities.BmAccount;
@@ -32,4 +33,9 @@ public interface BmTransactionFacadeLocal {
     int count();
    
     public List<BmTransaction> findTransactionHistory(BmAccount Accountid);
+    
+    double getTotalDeposits(LocalDate startDate, LocalDate endDate);
+    double getTotalWithdrawals(LocalDate startDate, LocalDate endDate);
+
+    int getTotalTransactions(LocalDate startDate, LocalDate endDate);
 }
