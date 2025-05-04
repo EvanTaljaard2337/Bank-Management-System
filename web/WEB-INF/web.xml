@@ -80,6 +80,18 @@
         <servlet-name>createAccount</servlet-name>
         <servlet-class>za.ac.tut.web.createAccount</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SummaryReportServlet</servlet-name>
+        <servlet-class>za.ac.tut.web.SummaryReportServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ComplaintReportServlet</servlet-name>
+        <servlet-class>za.ac.tut.web.ComplaintReportServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoanReportServlet</servlet-name>
+        <servlet-class>za.ac.tut.web.LoanReportServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/RegisterServlet.do</url-pattern>
@@ -183,6 +195,18 @@
     <servlet-mapping>
         <servlet-name>createAccount</servlet-name>
         <url-pattern>/createAccount.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SummaryReportServlet</servlet-name>
+        <url-pattern>/SummaryReportServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ComplaintReportServlet</servlet-name>
+        <url-pattern>/ComplaintReportServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoanReportServlet</servlet-name>
+        <url-pattern>/LoanReportServlet.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
