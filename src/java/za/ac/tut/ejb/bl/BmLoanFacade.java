@@ -10,6 +10,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.time.LocalDate;
 import java.util.List;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
@@ -103,5 +104,36 @@ public class BmLoanFacade extends AbstractFacade<BmLoan> implements BmLoanFacade
         query.setParameter("customersId",customerId); // Correctly bind the parameter
         return query.getResultList();
     }
-    
+    @Override
+    public double getOutstandingLoans(BmCustomer customerId, String loanStatus) {
+        // Step 1: Get all approved loans for the customer
+        List<BmLoan> loans = em.createQuery(
+            "SELECT l FROM BmLoan l WHERE l.bStatus = :loanStatus AND l.bCustomerid = :customerId", BmLoan.class)
+            .setParameter("loanStatus", loanStatus)
+            .setParameter("customerId", customerId)
+            .getResultList();
+
+        // Step 2: Calculate total disbursed and repaid amounts
+        double totalLoanAmount = 0.0;
+        double totalPayments = 0.0;
+
+        for (BmLoan loan : loans) {
+                    // Sum the total loan amount for this loan
+            totalLoanAmount += loan.getBLoanamount().doubleValue();
+
+        // Sum relevant transactions (e.g., deposits or withdrawals) that affect the loan
+            Double payments = em.createQuery(
+            "SELECT COALESCE(SUM(t.bAmount), 0) FROM BmTransaction t " +
+            "WHERE t.bAccountid IN (SELECT a.bAccountid FROM BmAccount a WHERE a.bCustomerid = :customerId)", 
+            Double.class)
+            .setParameter("customerId", customerId)
+            .getSingleResult();
+
+            totalPayments += (payments != null ? payments : 0.0);
+        }
+
+        // Calculate outstanding loans
+        double outstanding = totalLoanAmount - totalPayments;
+        return outstanding > 0 ? outstanding : 0.0;
+    }
 }
