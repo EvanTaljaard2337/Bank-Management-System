@@ -137,7 +137,9 @@
         %>
         <div class="header">
             <h1>Welcome, <%=c.getBFullname()%></h1>
-            <a href="index.html">Logout</a>
+            <form action="logoutServlet.do" method="post">
+                <button type="submit">Logout</button>
+            </form>
         </div>
         <div class="container">
             <div class="sidebar">
