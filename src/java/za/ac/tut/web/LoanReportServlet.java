@@ -4,7 +4,9 @@
  */
 package za.ac.tut.web;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -41,24 +43,37 @@ public class LoanReportServlet extends HttpServlet {
         String maxInterestParam = request.getParameter("maxInterestRate");
         String loanStatus = request.getParameter("loanStatus");
         String loanType = request.getParameter("loanType");
-
+        String export = request.getParameter("export");
+        customerName = (customerName != null && !customerName.trim().isEmpty()) ? customerName.trim() : null;
+        loanStatus = (loanStatus != null) ? loanStatus.trim() : null;
+        loanType = (loanType != null) ? loanType.trim() : null;
+    
         // Convert numeric parameters
-        BigDecimal minAmount = new BigDecimal(minAmountParam);
-        BigDecimal maxAmount =  new BigDecimal(maxAmountParam);
-        BigDecimal minInterest =  new BigDecimal(minInterestParam);
-        BigDecimal maxInterest =  new BigDecimal(maxInterestParam);
+        BigDecimal minAmount = parseBigDecimal(minAmountParam);
+        BigDecimal maxAmount = parseBigDecimal(maxAmountParam);
+        BigDecimal minInterest = parseBigDecimal(minInterestParam);
+        BigDecimal maxInterest = parseBigDecimal(maxInterestParam);
         
         // Handle loanId
         Integer loanId = parseInteger(loanIdParam);
-        
-        // Fetch filtered loans
-        List<BmLoan> loans = getLoansByFilter(loanId, customerName, minAmount, maxAmount, minInterest, maxInterest, loanStatus, loanType);
-        
-        // Set attributes for JSP
-        request.setAttribute("loans", loans);
+        try{
+            // Fetch filtered loans
+            List<BmLoan> loans = getLoansByFilter(loanId, customerName, minAmount, maxAmount, minInterest, maxInterest, loanStatus, loanType);
 
-        // Forward to JSP
-        request.getRequestDispatcher("generate_loan_report_outcome.jsp").forward(request, response);
+            if("text".equals(export)){
+                exportToText(loans,response);
+            }
+            // Set attributes for JSP
+            request.setAttribute("loans", loans);
+
+            // Forward to JSP
+            request.getRequestDispatcher("generate_loan_report_outcome.jsp").forward(request, response);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            request.setAttribute("errMsg", e.getMessage());
+            request.getRequestDispatcher("error.jsp").forward(request, response);
+        }
     }
     private List<BmLoan> getLoansByFilter(Integer loanId, String customerName, 
                                            BigDecimal minAmount, BigDecimal maxAmount, 
@@ -90,12 +105,12 @@ public class LoanReportServlet extends HttpServlet {
             if (maxInterest != null && loan.getBInterestrate().compareTo(maxInterest) > 0) {
                 matches = false;
             }
-            if (loanStatus != null && !loanStatus.isEmpty() && 
-                (!loan.getBStatus().equalsIgnoreCase(loanStatus) || !loan.getBStatus().equalsIgnoreCase("All") )) {
+            if (loanStatus != null && !loanStatus.equalsIgnoreCase("All") &&
+                !loan.getBStatus().equalsIgnoreCase(loanStatus)) {
                 matches = false;
             }
-            if (loanType != null && !loanType.isEmpty() && 
-                (!loan.getbLoanType().equalsIgnoreCase(loanType) || !loan.getbLoanType().equalsIgnoreCase("All"))) {
+            if (loanType != null && !loanType.equalsIgnoreCase("All") &&
+                !loan.getbLoanType().equalsIgnoreCase(loanType)) {
                 matches = false;
             }
             if (matches) {
@@ -128,4 +143,38 @@ public class LoanReportServlet extends HttpServlet {
         }
         return null; // Return null if the value is empty
     }
+    private void exportToText(List<BmLoan> activities, HttpServletResponse response) throws IOException {
+        if (activities == null || activities.isEmpty()) {
+            return;
+        }
+
+        // Set the content type and attachment header for text file download
+        response.setContentType("text/plain");
+        response.setHeader("Content-Disposition", "attachment; filename=LoanReport.txt");
+
+        // Use try-with-resources to handle the BufferedWriter and close it automatically
+        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(response.getOutputStream()))) {
+
+            // Write a title and timestamp to the file
+            writer.write("Loan Report\n");
+            writer.write("Generated on: " + new java.util.Date() + "\n");
+            writer.write("=====================================\n");
+
+            // Iterate over the list of activities and write them to the file
+            for (BmLoan loan : activities) {
+                writer.write("Loan ID: " + loan.getBLoanid() + "\n");
+                writer.write("Customer ID: " + loan.getBCustomerid() + "\n");
+                writer.write("Loan Amount: " + loan.getBLoanamount() + "\n");
+                writer.write("Interest Rate: " + loan.getBInterestrate() + "\n");
+                writer.write("Status: " + loan.getBStatus() + "\n");
+                writer.write("Loan Type: " + loan.getbLoanType() + "\n");
+                writer.write("-------------------------------------\n");
+            }
+        } catch (IOException e) {
+            // Log the exception and handle it appropriately
+            e.printStackTrace();
+            throw new IOException("Error exporting loan data", e);
+        }
+    }
+
 }
