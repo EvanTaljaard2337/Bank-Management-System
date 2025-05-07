@@ -6,61 +6,83 @@
 <head>
     <meta charset="UTF-8" />
     <title>Complaint Report Outcome</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            background-color: #f4f4f4;
-        }
-        h1 {
-            color: #333;
-        }
-        .complaints-table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 8px;
-            overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            margin-top: 20px;
-        }
-        .complaints-table th, .complaints-table td {
-            padding: 12px 15px;
-            border-bottom: 1px solid #ddd;
-            text-align: left;
-        }
-        .complaints-table th {
-            background-color: #007BFF;
-            color: white;
-            font-weight: normal;
-        }
-        .complaints-table tr:last-child td {
-            border-bottom: none;
-        }
-        .no-data {
-            padding: 20px;
-            font-style: italic;
-            color: #666;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            margin-top: 20px;
-        }
-        .home-button {
-            display: inline-block;
-            background-color: #007BFF;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-size: 16px;
-            margin-top: 20px;
-            transition: background-color 0.3s;
-        }
-        .home-button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #f4f4f4;
+    }
+
+    h1 {
+        color: #333;
+    }
+
+    .complaints-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        margin-top: 20px;
+    }
+
+    .complaints-table th, .complaints-table td {
+        padding: 12px 15px;
+        border-bottom: 1px solid #ddd;
+        text-align: left;
+    }
+
+    .complaints-table th {
+        background-color: #007BFF;
+        color: white;
+        font-weight: normal;
+    }
+
+    .complaints-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .no-data {
+        padding: 20px;
+        font-style: italic;
+        color: #666;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        margin-top: 20px;
+    }
+
+    .home-button,
+    .export-button {
+        display: inline-block;
+        background-color: #007BFF;
+        color: white;
+        padding: 12px 25px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-size: 16px;
+        text-align: center;
+        cursor: pointer;
+        margin-top: 20px;
+        transition: background-color 0.3s, transform 0.3s;
+        border: none; /* Remove border for cleaner look */
+    }
+
+    .home-button:hover,
+    .export-button:hover {
+        background-color: #0056b3;
+        transform: scale(1.05); /* Slight scale effect for hover */
+    }
+
+    .export-button {
+        background-color: #28a745; /* Green for export button */
+    }
+
+    .export-button:hover {
+        background-color: #218838;
+    }
+</style>
 </head>
 <body>
     <h1>Complaint Report Outcome</h1>
@@ -97,8 +119,20 @@
         <%
             }
         %>
+        
         </tbody>
     </table>
     <a href="bankManagerDashboard.jsp" class="home-button">Home</a>
+    <% if (complaints != null && !complaints.isEmpty()) { %>
+        <form method="get" action="ComplaintReportServlet.do">
+            <input type="hidden" name="export" value="text">
+            <!-- Preserve filter parameters for the next export -->
+            <input type="hidden" name="status" value="<%= request.getParameter("status") != null ? request.getParameter("status") : "" %>">
+            <input type="hidden" name="startDate" value="<%= request.getParameter("startDate") != null ? request.getParameter("startDate") : "" %>">
+            <input type="hidden" name="endDate" value="<%= request.getParameter("endDate") != null ? request.getParameter("endDate") : "" %>">
+            <input type="submit" value="Export as Text File" class="export-button">
+        </form>
+    <% } %>
+    
 </body>
 </html>

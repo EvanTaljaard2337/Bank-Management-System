@@ -82,6 +82,21 @@
             font-size: 14px;
             margin-top: 40px;
         }
+        button {
+            background: #007BFF;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
     </style>
 </head>
 <body>
@@ -101,8 +116,17 @@
                 <option value="approved">Approved</option>
                 <option value="rejected">Rejected</option>
             </select>
-            <input type="text" name="customerId" value="" />
+            <input type="text" name="customerId" value="" placeholder="Customer ID" required />
             <button type="submit">Generate Report</button>
+        </form>
+        
+        <form action="SummaryReportServlet.do" method="get" class="filter-section" style="margin-top: 20px;">
+            <input type="hidden" name="export" value="text" />
+            <input type="hidden" name="startDate" value="${startDate}" />
+            <input type="hidden" name="endDate" value="${endDate}" />
+            <input type="hidden" name="loanStatus" value="${loanStatus}" />
+            <input type="hidden" name="customerId" value="${customerId}" />
+            <button type="submit">Export as Text File</button>
         </form>
         
         <table class="summary-table">

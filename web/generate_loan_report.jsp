@@ -84,10 +84,11 @@
     <div class="filter-form">
         <form action="LoanReportServlet.do" method="GET">
             <label for="loanId">Loan ID:</label>
-            <input type="text" id="loanId" name="loanId" />
+            <input type="text" id="loanId" name="loanId" placeholder="Leave empty to search all loans" />
+
 
             <label for="customerName">Customer Name:</label>
-            <input type="text" id="customerName" name="customerName" />
+            <input type="text" id="customerName" name="customerName" placeholder="Leave empty to search all loans" />
 
             <label for="minAmount">Loan Amount (Min):</label>
             <input type="number" id="minAmount" name="minAmount" />

@@ -107,7 +107,7 @@
         <h2 class="welcome-message">Welcome</h2>
         <p>Fill in the details below to generate the transaction report.</p>
         
-        <form action="page_under_comstruction.jsp" method="post">
+        <form action="GenerateTransactionReportServlet.do" method="post">
             <label for="accountNumber">Account Number:</label>
             <input type="text" id="accountNumber" name="accountNumber" required>
 

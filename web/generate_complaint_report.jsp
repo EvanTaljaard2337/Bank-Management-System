@@ -91,12 +91,19 @@
         </select>
 
         <label for="startDate">Start Date:</label>
-        <input type="date" id="startDate" name="startDate" />
+        <input type="date" id="startDate" name="startDate" required max="" />
 
         <label for="endDate">End Date:</label>
-        <input type="date" id="endDate" name="endDate" />
+        <input type="date" id="endDate" name="endDate" required max="" />
 
         <button type="submit">Generate Report</button>
     </form>
+    <script>
+        // Get today's date in YYYY-MM-DD format
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById("startDate").setAttribute("max", today);
+        document.getElementById("endDate").setAttribute("max", today);
+    </script>
 </body>
 </html>
+
