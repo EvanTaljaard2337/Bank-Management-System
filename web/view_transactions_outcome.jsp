@@ -102,6 +102,20 @@
                 font-size: 14px;
                 margin-top: 40px;
             }
+            button, .export-button {
+                background: #007BFF;
+                color: white;
+                border: none;
+                padding: 8px 16px;
+                border-radius: 5px;
+                font-size: 14px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+            button:hover, .export-button:hover {
+                background-color: #0056b3;
+            }
         </style>
     </head>
     <body>
@@ -147,6 +161,16 @@
             <div class="nav-links">
                 <a href="view_transactions.jsp">Back to Filter</a>
                 <a href="index.html">Main Page</a>
+                <% if (transactions != null && !transactions.isEmpty()) { %>
+                    <form method="GET" action="page_under_comstruction.jsp" style="display: inline;">
+                        <input type="hidden" name="accountNumber" value="<%= request.getParameter("accountNumber") != null ? request.getParameter("accountNumber") : "" %>">
+                        <input type="hidden" name="transactionType" value="<%= request.getParameter("transactionType") != null ? request.getParameter("transactionType") : "" %>">
+                        <input type="hidden" name="startDate" value="<%= request.getParameter("startDate") != null ? request.getParameter("startDate") : "" %>">
+                        <input type="hidden" name="endDate" value="<%= request.getParameter("endDate") != null ? request.getParameter("endDate") : "" %>">
+                        <input type="hidden" name="export" value="text">
+                        <button type="submit" class="export-button" style="margin-left: 10px;">Export as Text File</button>
+                    </form>
+                <% } %>
             </div>
         </div>
         <div class="footer">

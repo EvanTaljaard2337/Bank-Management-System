@@ -102,33 +102,48 @@
                 margin-top: 40px;
             }
         </style>
-    </head>
-    <body>
-        <div class="header">
-            <h1>Transaction Records</h1>
-            <a href="index.html">Logout</a>
-        </div>
-        <div class="container">
-            <h2 class="form-title">Filter Transactions</h2>
-            <p class="form-instruction">Filter the list by selecting an option below.</p>
-            <form action="ViewTransactionsServlet.do" method="GET">
-                <div class="form-group">
-                    <label for="filter">Filter By:</label>
-                    <select name="filter" id="filter">
-                        <option value="ID">ID</option>
-                        <option value="Max amount">Max amount</option>
-                        <option value="View all">View All</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="filter_val">Provide filter value:</label>
-                    <input type="text" name="filter_val" id="filter_val" required/>
-                </div>
-                <input type="submit" value="VIEW" class="submit-btn"/>
-            </form>
-        </div>
-        <div class="footer">
-            &copy; 2025 Your Bank Name | Bank Management
-        </div>
-    </body>
+<script>
+        function toggleFilterValue() {
+            var filterSelect = document.getElementById("filter");
+            var filterValueInput = document.getElementById("filter_val");
+            if (filterSelect.value === "View all") {
+                filterValueInput.value = ""; // Clear the input
+                filterValueInput.disabled = true; // Disable the input
+                filterValueInput.required = false; // Remove required attribute
+            } else {
+                filterValueInput.disabled = false; // Enable the input
+                filterValueInput.required = true; // Set required attribute
+            }
+        }
+
+    </script>
+</head>
+<body>
+    <div class="header">
+        <h1>Transaction Records</h1>
+        <a href="index.html">Logout</a>
+    </div>
+    <div class="container">
+        <h2 class="form-title">Filter Transactions</h2>
+        <p class="form-instruction">Filter the list by selecting an option below.</p>
+        <form action="ViewTransactionsServlet.do" method="GET">
+            <div class="form-group">
+                <label for="filter">Filter By:</label>
+                <select name="filter" id="filter" onchange="toggleFilterValue()">
+                    <option value="ID">ID</option>
+                    <option value="Max amount">Max amount</option>
+                    <option value="View all">View All</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="filter_val">Provide filter value:</label>
+                <input type="text" name="filter_val" id="filter_val" required/>
+            </div>
+            <input type="submit" value="VIEW" class="submit-btn"/>
+        </form>
+    </div>
+    <div class="footer">
+        &copy; 2025 Your Bank Name | Bank Management
+    </div>
+</body>
 </html>
