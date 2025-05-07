@@ -4,6 +4,7 @@
  */
 package za.ac.tut.web;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
@@ -14,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.crypto.Data;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -74,7 +76,7 @@ public class SummaryReportServlet extends HttpServlet {
             LocalDate endDate = (endDateParam != null && !endDateParam.isEmpty())
                     ? LocalDate.parse(endDateParam, fmt)
                     : today;
-
+            request.setAttribute("customerId",customerId);
             request.setAttribute("startDate",startDate.format(fmt));
             request.setAttribute("endDate",endDate.format(fmt));
             request.setAttribute("totalAccounts",afl.count());
@@ -85,7 +87,16 @@ public class SummaryReportServlet extends HttpServlet {
             request.setAttribute("complaints",cfl.findAll().size());
             request.setAttribute("unresolvedComplaints",getComplaints(unresolvedComplaintString));
             request.setAttribute("totalTransactions",tfl.getTotalTransactions(startDate, endDate));
-
+            
+            String export = request.getParameter("export");
+            if ("text".equals(export)) {
+                        exportToText(response, startDate, endDate, afl.count(), tfl.getTotalDeposits(startDate, endDate), 
+                          tfl.getTotalWithdrawals(startDate,endDate), lfl.cntLoans(loanStatus), outstandingLoans, 
+                          cfl.findAll().size(), getComplaints(unresolvedComplaintString), tfl.getTotalTransactions(startDate, endDate));
+                
+                return; // Exit early so it doesn't continue
+            }
+            
             RequestDispatcher disp = request.getRequestDispatcher("generate_summary_report.jsp");
             disp.forward(request,response);
         }
@@ -119,4 +130,31 @@ public class SummaryReportServlet extends HttpServlet {
         customer.getBCustomerid();
         return customer;
     }
+    private void exportToText(HttpServletResponse response, LocalDate startDate, LocalDate endDate, 
+                             int totalAccounts, double totalDeposits, double totalWithdrawals, 
+                             int totalLoansApproved, double outstandingLoans, 
+                             int totalComplaints, int unresolvedComplaints, 
+                             int totalTransactions) throws IOException {
+       // Set the content type and attachment header for text file download
+       response.setContentType("text/plain");
+       response.setHeader("Content-Disposition", "attachment; filename=SummaryReport.txt");
+       try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(response.getOutputStream()))) {
+           writer.write("Summary Report\n");
+           writer.write("Report Period: " + startDate.format(fmt) + " to " + endDate.format(fmt) + "\n");
+           writer.write("Generated on: " + java.time.LocalDateTime.now() + "\n");
+           writer.write("=====================================\n");
+           writer.write("Total Active Accounts: " + totalAccounts + "\n");
+           writer.write("Total Deposits: " + totalDeposits + "\n");
+           writer.write("Total Withdrawals: " + totalWithdrawals + "\n");
+           writer.write("Total Loans Approved: " + totalLoansApproved + "\n");
+           writer.write("Total Outstanding Loans: " + outstandingLoans + "\n");
+           writer.write("Total Customer Complaints: " + totalComplaints + "\n");
+           writer.write("Unresolved Complaints: " + unresolvedComplaints + "\n");
+           writer.write("Total Transactions: " + totalTransactions + "\n");
+           writer.write("-------------------------------------\n");
+       } catch (IOException e) {
+           e.printStackTrace();
+           throw new IOException("Error exporting summary report", e);
+       }
+   }
 }
