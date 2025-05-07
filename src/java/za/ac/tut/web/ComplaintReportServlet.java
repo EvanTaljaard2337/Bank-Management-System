@@ -4,7 +4,9 @@
  */
 package za.ac.tut.web;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -35,7 +37,7 @@ public class ComplaintReportServlet extends HttpServlet {
         String statusFilter = request.getParameter("status");
         String startDateStr = request.getParameter("startDate");
         String endDateStr = request.getParameter("endDate");
-
+        String export = request.getParameter("export");
         Date startDate = null;
         Date endDate = null;
 
@@ -63,7 +65,10 @@ public class ComplaintReportServlet extends HttpServlet {
             // Apply filters
             complaints = getComplaints(statusFilter,startDate,endDate);
         }
-
+        
+        if("text".equals(export)){
+            exportToText(complaints,response);
+        }
         request.setAttribute("complaints", complaints);
         RequestDispatcher dispatcher = request.getRequestDispatcher("generate_complaint_report_outcome.jsp");
         dispatcher.forward(request, response);
@@ -83,5 +88,37 @@ public class ComplaintReportServlet extends HttpServlet {
             }
         }
         return filteredComplaints;
+    }
+        // Method to export data to a text file
+    private void exportToText(List<BmComplaint> activities, HttpServletResponse response) throws IOException {
+        if (activities == null || activities.isEmpty()) {
+            return;
+        }
+
+        // Set the content type and attachment header for text file download
+        response.setContentType("text/plain");
+        response.setHeader("Content-Disposition", "attachment; filename=ComplaintReport.txt");
+
+        // Create a BufferedWriter to write to the response output stream
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(response.getOutputStream()));
+
+        // Write a title and timestamp to the file
+        writer.write("Complaint Report\n");
+        writer.write("Generated on: " + new java.util.Date() + "\n");
+        writer.write("=====================================\n");
+
+        // Iterate over the list of activities and write them to the file
+        for (BmComplaint activity : activities) {
+            writer.write("Complaint ID: " + activity.getBComplaintid() + "\n");
+            writer.write("Description: " + activity.getBDescription()+ "\n");
+            writer.write("Status: " + activity.getBStatus() + "\n");
+            writer.write("Date: " + activity.getBCreatedat() + "\n");
+            writer.write("Date: " + activity.getBCustomerid().getBFullname() + "\n");
+            writer.write("-------------------------------------\n");
+        }
+
+        // Flush and close the writer
+        writer.flush();
+        writer.close();
     }
 }
