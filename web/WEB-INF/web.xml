@@ -92,6 +92,18 @@
         <servlet-name>LoanReportServlet</servlet-name>
         <servlet-class>za.ac.tut.web.LoanReportServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>GenerateTransactionReportServlet</servlet-name>
+        <servlet-class>za.ac.tut.web.GenerateTransactionReportServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>UserActivityReportServlet</servlet-name>
+        <servlet-class>za.ac.tut.web.UserActivityReportServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>logoutServlet</servlet-name>
+        <servlet-class>za.ac.tut.web.logoutServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/RegisterServlet.do</url-pattern>
@@ -207,6 +219,18 @@
     <servlet-mapping>
         <servlet-name>LoanReportServlet</servlet-name>
         <url-pattern>/LoanReportServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GenerateTransactionReportServlet</servlet-name>
+        <url-pattern>/GenerateTransactionReportServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UserActivityReportServlet</servlet-name>
+        <url-pattern>/UserActivityReportServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>logoutServlet</servlet-name>
+        <url-pattern>/logoutServlet.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
