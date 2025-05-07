@@ -96,12 +96,12 @@
     </div>
     <div class="container">
         <%
-            BmBankManager m = (BmBankManager)request.getAttribute("manager");
+            BmBankManager m = (BmBankManager)session.getAttribute("manager");
         %>
         <h2 class="welcome-message">Welcome</h2>
         <p>Please fill out the form below to generate the user activity report.</p>
         
-        <form action="page_under_comstruction.jsp" method="post">
+        <form action="UserActivityReportServlet.do" method="post">
             <label for="userId">User  ID:</label>
             <input type="text" id="userId" name="userId" required>
 
@@ -122,6 +122,13 @@
 
             <input type="submit" value="Generate Report">
         </form>
+        <script>
+            window.onload = function() {
+                const today = new Date().toISOString().split("T")[0];
+                document.getElementById("startDate").setAttribute("max", today);
+                document.getElementById("endDate").setAttribute("max", today);
+            };
+        </script>
     </div>
     <div class="footer">
         &copy; 2025 Your Bank Name | Manager Portal
