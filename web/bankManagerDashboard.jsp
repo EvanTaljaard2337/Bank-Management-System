@@ -88,7 +88,11 @@
         </div>
         <div class="container">
             <%
-                BmBankManager m = (BmBankManager)request.getAttribute("manager");
+                BmBankManager m = (BmBankManager)session.getAttribute("manager");
+                if (m.getBFullname() == null) {
+                    response.sendRedirect("index.html"); // fallback
+                    return;
+                }
             %>
             <h2 class="welcome-message">Welcome, <%=m.getBFullname()%></h2>
             <p>You can view and manage all bank transactions from this dashboard.</p>
