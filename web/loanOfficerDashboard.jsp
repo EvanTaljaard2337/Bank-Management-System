@@ -120,8 +120,8 @@
             
             <div class="report-form">
                 <p>Generate Loan Report:</p>
-                <form action="loan_report.jsp" method="POST">
-                    <input type="submit" value="VIEW REPORT"/>
+                <form action="LoanReportServlet.do" method="POST">
+                    <input type="submit" value="GENERATE REPORT"/>
                 </form>
             </div>
         </div>

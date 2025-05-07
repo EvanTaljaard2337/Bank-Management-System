@@ -67,7 +67,7 @@
     <body>
         <div class="container">
             <h1>Welcome to Uni Bank</h1>
-            <p>Please fill in the details below to create an account</h1></p>
+            <p>Please fill in the details below to register</h1></p>
             <form action="RegisterServlet.do" method="POST">
                 <table>
                     <tbody>

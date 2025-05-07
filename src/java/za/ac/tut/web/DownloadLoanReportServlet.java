@@ -6,39 +6,41 @@
 package za.ac.tut.web;
 
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import javax.ejb.EJB;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.text.Document;
 import za.ac.tut.ejb.bl.BmLoanFacadeLocal;
 
 /**
  *
  * @author thand
  */
-public class LoanReportServlet extends HttpServlet {
-
+public class DownloadLoanReportServlet extends HttpServlet {
     @EJB
     private BmLoanFacadeLocal lfl;
     
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-                Integer cntAppLoans = lfl.cntLoans("Approved");
+        Integer cntAppLoans = lfl.cntLoans("Approved");
         Integer cntRejectedLoans = lfl.cntLoans("Rejected");
         Integer cntPendingLoans = lfl.cntLoans("Pending");
-        
-        request.setAttribute("approved", cntAppLoans);
-        request.setAttribute("rejected", cntRejectedLoans);
-        request.setAttribute("pending", cntPendingLoans);
-        
-        RequestDispatcher disp = request.getRequestDispatcher("loan_report.jsp");
-        disp.forward(request, response);
+
+        response.setContentType("text/plain");
+        response.setHeader("Content-Disposition", "attachment; filename=LoanReport.txt");
+
+        try (PrintWriter writer = new PrintWriter(new OutputStreamWriter(response.getOutputStream(), "UTF-8"))) {
+            writer.println("Loan Report Summary");
+            writer.println("=====================");
+            writer.println("Approved Loans: " + cntAppLoans);
+            writer.println("Rejected Loans: " + cntRejectedLoans);
+            writer.println("Pending Loans: " + cntPendingLoans);
+        }
     }
+
 
 }

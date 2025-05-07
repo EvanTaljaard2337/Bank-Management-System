@@ -92,6 +92,10 @@
         <servlet-name>LoanReportServlet</servlet-name>
         <servlet-class>za.ac.tut.web.LoanReportServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>DownloadLoanReportServlet</servlet-name>
+        <servlet-class>za.ac.tut.web.DownloadLoanReportServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/RegisterServlet.do</url-pattern>
@@ -207,6 +211,10 @@
     <servlet-mapping>
         <servlet-name>LoanReportServlet</servlet-name>
         <url-pattern>/LoanReportServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DownloadLoanReportServlet</servlet-name>
+        <url-pattern>/DownloadLoanReportServlet.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
