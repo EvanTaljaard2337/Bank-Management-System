@@ -21,7 +21,7 @@ import za.ac.tut.ejb.bl.BmLoanFacadeLocal;
  *
  * @author thand
  */
-public class LoanReportServlet extends HttpServlet {
+public class LoanOfficerReportServlet extends HttpServlet {
 
     @EJB
     private BmLoanFacadeLocal lfl;

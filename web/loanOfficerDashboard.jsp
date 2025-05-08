@@ -120,7 +120,7 @@
             
             <div class="report-form">
                 <p>Generate Loan Report:</p>
-                <form action="LoanReportServlet.do" method="POST">
+                <form action="LoanOfficerReportServlet.do" method="POST">
                     <input type="submit" value="GENERATE REPORT"/>
                 </form>
             </div>

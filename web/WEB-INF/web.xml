@@ -89,8 +89,8 @@
         <servlet-class>za.ac.tut.web.ComplaintReportServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>LoanReportServlet</servlet-name>
-        <servlet-class>za.ac.tut.web.LoanReportServlet</servlet-class>
+        <servlet-name>LoanOfficerReportServlet</servlet-name>
+        <servlet-class>za.ac.tut.web.LoanOfficerReportServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>DownloadLoanReportServlet</servlet-name>
@@ -209,8 +209,8 @@
         <url-pattern>/ComplaintReportServlet.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>LoanReportServlet</servlet-name>
-        <url-pattern>/LoanReportServlet.do</url-pattern>
+        <servlet-name>LoanOfficerReportServlet</servlet-name>
+        <url-pattern>/LoanOfficerReportServlet.do</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>DownloadLoanReportServlet</servlet-name>
