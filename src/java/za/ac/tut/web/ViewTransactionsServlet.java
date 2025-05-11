@@ -12,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import za.ac.tut.ejb.bl.BmTransactionFacadeLocal;
 import za.ac.tut.entities.BmTransaction;
 
@@ -22,13 +23,16 @@ public class ViewTransactionsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+         HttpSession session = request.getSession();
         String filter = request.getParameter("filter");
         String filterValue = request.getParameter("filter_val");
         String export = request.getParameter("export");
-
+        
+        session.setAttribute("filter", filter);
+        session.setAttribute("filter_val", filterValue);
         // Check if filter is null or empty
         if (filter == null || filter.trim().isEmpty()) {
-            request.setAttribute("errorMessage", "Filter is required.");
+            request.setAttribute("errMsg", "Filter is required.");
             RequestDispatcher disp = request.getRequestDispatcher("error.jsp");
             disp.forward(request, response);
             return;
@@ -42,21 +46,29 @@ public class ViewTransactionsServlet extends HttpServlet {
             disp.forward(request, response);
             return;
         }
-        // Check if filterValue is null or empty for other filters
-        if (filterValue == null || filterValue.trim().isEmpty()) {
-            request.setAttribute("errorMessage", "Filter value is required.");
+        List<BmTransaction> filteredBmTransactions = getTransactions(filter, filterValue);
+                // Check if filterValue is null or empty for other filters
+        if (filteredBmTransactions == null || filteredBmTransactions.isEmpty()) {
+            request.setAttribute("errMsg", "No transactions found for export.");
             RequestDispatcher disp = request.getRequestDispatcher("error.jsp");
             disp.forward(request, response);
             return;
         }
-        List<BmTransaction> filteredBmTransactions = getTransactions(filter, filterValue);
         try{
             // Check if the export parameter is set to "text"
             if ("text".equals(export)) {
-                exportToText(filteredBmTransactions, response);
-                return; // Exit after exporting to avoid forwarding
+                try{
+                    exportToText(filteredBmTransactions, response);
+                    return; // Exit after exporting to avoid forwarding
+                }
+                catch(Exception e){
+                    e.printStackTrace();
+                    request.setAttribute("errMsg",e.getMessage());
+                    RequestDispatcher disp = request.getRequestDispatcher("error.jsp");
+                    disp.forward(request, response);
+                }
             }
-
+            session.setAttribute("transactions", filteredBmTransactions);
             request.setAttribute("transactions", filteredBmTransactions);
             RequestDispatcher disp = request.getRequestDispatcher("view_transactions_outcome.jsp");
             disp.forward(request, response);
@@ -123,8 +135,10 @@ public class ViewTransactionsServlet extends HttpServlet {
                 } else {
                     writer.write("Account ID: Not available\n");
                 }
+                writer.write("Transaction ID: " + transaction.getBTransactionid() + "\n");
+                writer.write("Account ID: " + transaction.getBAccountid() + "\n");
                 writer.write("Transaction Type: " + transaction.getBTransactiontype() + "\n");
-                writer.write("Amount: " + transaction.getBAmount() + "\n");
+                writer.write("Ammount: " + transaction.getBAmount() + "\n");
                 writer.write("Date: " + transaction.getBTransactiondate() + "\n");
                 writer.write("-------------------------------------\n");
             }

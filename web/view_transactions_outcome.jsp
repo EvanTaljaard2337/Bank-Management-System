@@ -161,15 +161,19 @@
             <div class="nav-links">
                 <a href="view_transactions.jsp">Back to Filter</a>
                 <a href="index.html">Main Page</a>
-                <% if (transactions != null && !transactions.isEmpty()) { %>
-                    <form method="GET" action="page_under_comstruction.jsp" style="display: inline;">
-                        <input type="hidden" name="accountNumber" value="<%= request.getParameter("accountNumber") != null ? request.getParameter("accountNumber") : "" %>">
-                        <input type="hidden" name="transactionType" value="<%= request.getParameter("transactionType") != null ? request.getParameter("transactionType") : "" %>">
-                        <input type="hidden" name="startDate" value="<%= request.getParameter("startDate") != null ? request.getParameter("startDate") : "" %>">
-                        <input type="hidden" name="endDate" value="<%= request.getParameter("endDate") != null ? request.getParameter("endDate") : "" %>">
-                        <input type="hidden" name="export" value="text">
-                        <button type="submit" class="export-button" style="margin-left: 10px;">Export as Text File</button>
-                    </form>
+                <% 
+                    String filter = (String) session.getAttribute("filter");
+                    String filterVal = (String) session.getAttribute("filter_val");
+                    System.out.println("Filter: " + filter);
+                    System.out.println("Filter Value: " + filterVal);
+                    if (transactions != null && !transactions.isEmpty()) { 
+                %>
+                <form method="GET" action="ViewTransactionsServlet.do" style="display: inline;">
+                    <input type="hidden" name="filter" value="<%= session.getAttribute("filter") != null ? session.getAttribute("filter") : "" %>">
+                    <input type="hidden" name="filter_val" value="<%= session.getAttribute("filter_val") != null ? session.getAttribute("filter_val") : "" %>">
+                    <input type="hidden" name="export" value="text">
+                    <button type="submit" class="export-button" style="margin-left: 10px;">Export as Text File</button>
+                </form>
                 <% } %>
             </div>
         </div>

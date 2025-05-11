@@ -130,7 +130,8 @@ public class loginServlet extends HttpServlet {
         activity.setActivityTime(new Timestamp(System.currentTimeMillis())); // Current time
 
         // Optionally, associate the activity with the system administrator or other roles
-        BmSystemAdministrator admin = (BmSystemAdministrator) getServletContext().getAttribute("currentAdmin");
+        BmSystemAdministrator admin = new BmSystemAdministrator();
+        admin.setBAdminid(1);
         activity.setAdministrator(admin); // Associate with admin if needed
 
         // Persist the activity to the database

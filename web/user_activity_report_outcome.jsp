@@ -50,9 +50,23 @@
             font-size: 14px;
             margin-top: 40px;
         }
+        .export-button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
         .export-button {
-            text-align: right;
-            margin-top: 20px;
+            padding: 12px 25px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .export-button:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
@@ -74,7 +88,7 @@
         </thead>
         <tbody>
             <%
-                List<UserActivity> activities = (List<UserActivity>) request.getAttribute("activities");
+                List<UserActivity> activities = (List<UserActivity>)request.getAttribute("activities");
                 if (activities != null && !activities.isEmpty()) {
                     for (UserActivity u : activities) {
             %>
@@ -82,7 +96,19 @@
                 <td><%= u.getUserId() %></td>
                 <td><%= u.getActivityType() %></td>
                 <td><%= u.getActivityTime() %></td>
-                <td><%= u.getAdministrator().getBFullname() %></td>
+            <td>
+                <%
+                    if (u.getAdministrator() != null && u.getAdministrator().getBFullname() != null) {
+                %>
+                        <%= u.getAdministrator().getBFullname() %>
+                <%
+                    } else {
+                %>
+                        <%="N/A" %>
+                <%
+                    }
+                %>
+            </td>
             </tr>
             <%
                     }
@@ -100,10 +126,15 @@
     <%
         if (activities != null && !activities.isEmpty()) {
     %>
-    <div class="export-button">
-        <form method="post" action="UserActivityReportServlet">
+    <div class="export-button-container">
+        <form method="post" action="UserActivityReportServlet.do">
             <input type="hidden" name="export" value="text">
-            <input type="submit" value="Export as Text File">
+            <input type="hidden" name="userId" value="<%= request.getParameter("userId") != null ? request.getParameter("userId") : "" %>">
+            <input type="hidden" name="activityType" value="<%= request.getParameter("activityType") != null ? request.getParameter("activityType") : "" %>">
+            <input type="hidden" name="startDate" value="<%= request.getParameter("startDate") != null ? request.getParameter("startDate") : "" %>">
+            <input type="hidden" name="endDate" value="<%= request.getParameter("endDate") != null ? request.getParameter("endDate") : "" %>">
+            <input type="hidden" name="manager" value="<%= request.getParameter("manager") != null ? request.getParameter("manager") : "" %>">
+            <input class="export-button" type="submit" value="Export as Text File">
         </form>
     </div>
     <%
@@ -117,4 +148,3 @@
 
 </body>
 </html>
-

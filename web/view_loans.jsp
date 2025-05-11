@@ -136,7 +136,7 @@
         </div>
         <div class="container">
             <h2 class="form-title">View Loans</h2>
-            <p class="form-instruction">Filter the list by selecting a status below.</p>
+            <p class="form-instruction">To view loans by status, filter the list by selecting a status below.</p>
             <form action="ViewLoansServlet.do" method="GET">
                 <div class="form-group">
                     <label for="filter">Filter By Status:</label>
@@ -150,7 +150,7 @@
             </form>
             
             <div class="range-group">
-                <p class="form-instruction">Filter list by selecting the number of loans to view.</p>
+                <p class="form-instruction">To view a number of loans, filter list by selecting the number of loans to view.</p>
                 <form action="ViewANumberOfLoansServlet.do" method="GET">
                     <div class="form-group">
                         <label for="loanRange">Number of Loans: <span class="range-value" id="rangeValue">25</span></label>

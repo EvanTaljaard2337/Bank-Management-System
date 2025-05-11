@@ -102,18 +102,20 @@
         <p>Please fill out the form below to generate the user activity report.</p>
         
         <form action="UserActivityReportServlet.do" method="post">
-            <label for="userId">User  ID:</label>
-            <input type="text" id="userId" name="userId" required>
+            <label for="userId">User  ID (leave empty to view all):</label>
+            <input type="text" id="userId" name="userId" />
 
+            <input type="hidden" id="manager" name="manager" value="<%= m.getBManagerid() %>">
             <label for="activityType">Activity Type:</label>
-            <select id="activityType" name="activityType" required>
-                <option value="">Select Activity</option>
+            <select id="activityType" name="activityType">
+                <option value="">All</option>
                 <option value="login">Login</option>
                 <option value="logout">Logout</option>
                 <option value="data_entry">Data Entry</option>
                 <option value="report_generation">Report Generation</option>
             </select>
 
+            
             <label for="startDate">Start Date:</label>
             <input type="date" id="startDate" name="startDate" required>
 
