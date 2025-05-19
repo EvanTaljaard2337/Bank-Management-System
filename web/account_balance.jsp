@@ -60,21 +60,33 @@
         .balance-amount {
             font-size: 36px;
             font-weight: bold;
-            color: #28a745; /* Green for balance */
+            color: #28a745;
             margin: 10px 0;
         }
         .account-status {
             font-size: 16px;
-            color: #007BFF; /* Blue for status */
+            color: #007BFF;
             margin-top: 5px;
         }
         .home-link {
-            color: #007BFF;
+            display: inline-block;
+            background: #007BFF;
+            color: white;
             text-decoration: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            margin: 10px 0;
             font-weight: bold;
+            font-size: 16px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
         .home-link:hover {
-            text-decoration: underline;
+            background-color: #0056b3;
+        }
+        .pending-account-card {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
         }
     </style>
 </head>
@@ -86,16 +98,59 @@
     
     <div class="container">
         <%
-            List<BmAccount> accountList = (List<BmAccount>)session.getAttribute("acountDetails");
-            
+            List<BmAccount> accountList = (List<BmAccount>) session.getAttribute("acountDetails");
+
             if (accountList != null && !accountList.isEmpty()) {
+                boolean hasActive = false;
+                boolean hasPending = false;
+
                 for (BmAccount acc : accountList) {
+                    if ("Pending".equals(acc.getBStatus())) {
+                        hasPending = true;
+                    } else {
+                        hasActive = true;
+                    }
+                }
+
+                if (hasActive) {
         %>
-            <div class="account-card">
-                <p class="balance-label">Account Type: <b><%= acc.getBAccounttype() %></b></p>
-                <p class="balance-amount">R <%= acc.getBBalance() != null ? acc.getBBalance() : "0.00" %></p>
-                <p class="account-status">Status: <b><%= acc.getBStatus() %></b></p>
-            </div>
+                    <h2>Active Accounts</h2>
+        <%
+                    for (BmAccount acc : accountList) {
+                        if (!"Pending".equals(acc.getBStatus())) {
+        %>
+                            <div class="account-card">
+                                <p class="balance-label">Account Type: <b><%= acc.getBAccounttype() %></b></p>
+                                <p class="balance-amount">R <%= acc.getBBalance() != null ? String.format("%,.2f", acc.getBBalance()) : "0.00" %></p>
+                                <p class="account-status">Status: <b><%= acc.getBStatus() %></b></p>
+                            </div>
+        <%
+                        }
+                    }
+                } else {
+        %>
+                    <p>No approved accounts found.</p>
+        <%
+                }
+
+                if (hasPending) {
+        %>
+                    <h2>Accounts Awaiting Approval</h2>
+        <%
+                    for (BmAccount acc : accountList) {
+                        if ("Pending".equals(acc.getBStatus())) {
+        %>
+                            <div class="account-card pending-account-card">
+                                <p class="balance-label">Account Type: <b><%= acc.getBAccounttype() %></b></p>
+                                <p class="balance-amount">R <%= acc.getBBalance() != null ? String.format("%,.2f", acc.getBBalance()) : "0.00" %></p>
+                                <p class="account-status">Status: <b><%= acc.getBStatus() %></b></p>
+                            </div>
+        <%
+                        }
+                    }
+                } else {
+        %>
+                    <p>No pending account applications.</p>
         <%
                 }
             } else {
