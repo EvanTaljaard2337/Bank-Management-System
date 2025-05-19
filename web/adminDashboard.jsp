@@ -89,7 +89,7 @@
         </div>
         <div class="container">
             <%
-                BmSystemAdministrator c = (BmSystemAdministrator)request.getAttribute("admin");   
+                BmSystemAdministrator c = (BmSystemAdministrator)session.getAttribute("admin");   
             %>
             <h1 class="welcome-message">Welcome <b><%=c.getBFullname()%></b>!</h1>
             
