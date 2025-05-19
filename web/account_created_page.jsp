@@ -4,6 +4,7 @@
     Author     : Evan
 --%>
 
+<%@page import="za.ac.tut.entities.BmBankManager"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -52,13 +53,15 @@
 </head>
 <body>
     <div class="container">
-        <h1>Account Created!</h1>
-        
+        <h1>Account Application Submitted</h1>
         <%
             String accountType = (String)request.getAttribute("accountType");
+            BmBankManager manager = (BmBankManager)session.getAttribute("manager");
         %>
-        <p>Your <b><%=accountType%></b> has been created successfully!</p>
-        <p>Click <a href="customer_dashboard.jsp">here</a> to go to the home page</p>
+        <p>Your request for a <b><%=accountType%></b> has been created successfully!</p>
+        <p>The Bank will review your application shortly.</p>
+        <%if(manager!=null){%><p>Click <a href="bankManagerDashboard.jsp">here</a> to go to the home page</p>
+        <%}else{%><p>Click <a href="customer_dashboard.jsp">here</a> to go to the home page</p><%}%>
     </div>
 </body>
 </html>
