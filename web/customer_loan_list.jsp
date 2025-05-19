@@ -87,6 +87,22 @@
             a:hover {
                 text-decoration: underline;
             }
+            .action-link {
+                display: inline-block;
+                background: #007BFF;
+                color: white;
+                text-decoration: none;
+                padding: 12px 25px;
+                border-radius: 5px;
+                transition: background-color 0.3s;
+                margin: 20px auto;
+                font-weight: bold;
+                font-size: 16px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            }
+            .action-link:hover {
+                background-color: #0056b3;
+            }
             .footer {
                 text-align: center;
                 padding: 20px;
@@ -133,6 +149,9 @@
                 }
             %>
             </table>
+            <div style="text-align: center;">
+                <a href="customer_dashboard.jsp" class="action-link">Home</a>
+            </div>
         </div>
         <div class="footer">
             &copy; 2025 Your Bank Name | Contact Support: support@yourbank.com | Phone: 123-456-7890
