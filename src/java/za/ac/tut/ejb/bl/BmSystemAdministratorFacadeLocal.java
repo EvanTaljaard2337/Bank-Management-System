@@ -31,4 +31,6 @@ public interface BmSystemAdministratorFacadeLocal {
     int count();
     
     BmSystemAdministrator findByEmailAndPassword(String email,String password);
+    
+    public BmSystemAdministrator findByEmail(String email);
 }
