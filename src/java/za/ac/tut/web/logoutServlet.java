@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
 import javax.ejb.EJB;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -27,7 +28,15 @@ public class logoutServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        logoutUser(request, response);
+        try{
+            logoutUser(request, response);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+            request.setAttribute("errMsg", e.getMessage());
+            RequestDispatcher disp = request.getRequestDispatcher("error.jsp");
+            disp.forward(request, response);
+        }
     }
         public void logoutUser(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //String userId = (String) request.getSession().getAttribute("userId");
