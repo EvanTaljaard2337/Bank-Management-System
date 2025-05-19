@@ -80,7 +80,7 @@
                 border-radius: 4px;
             }
             input[type="submit"] {
-                background-color: #28a745;
+                background-color: #007BFF;
                 color: white;
                 border: none;
                 padding: 10px 15px;
@@ -90,7 +90,7 @@
                 transition: background-color 0.3s;
             }
             input[type="submit"]:hover {
-                background-color: #218838;
+                background-color: #007BFF;
             }
             .view-history-link {
                 display: block;
