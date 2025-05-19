@@ -190,5 +190,9 @@ public class BmCustomer implements Serializable {
     public String toString() {
         return "za.ac.tut.entities.BmCustomer[ bCustomerid=" + bCustomerid + " ]";
     }
+
+    public void setPassword(String newPassword) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
 }
