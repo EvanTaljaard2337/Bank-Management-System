@@ -112,38 +112,6 @@
         <servlet-name>logoutServlet</servlet-name>
         <servlet-class>za.ac.tut.web.logoutServlet</servlet-class>
     </servlet>
-    <servlet>
-        <servlet-name>ForgotPasswordServlet</servlet-name>
-        <servlet-class>za.ac.tut.web.ForgotPasswordServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ResetPasswordServlet</servlet-name>
-        <servlet-class>za.ac.tut.web.ResetPasswordServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>RemoveAccountServlet</servlet-name>
-        <servlet-class>za.ac.tut.web.RemoveAccountServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>GetAllCustomersServlet</servlet-name>
-        <servlet-class>za.ac.tut.web.GetAllCustomersServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>UpdateCustomerServlet</servlet-name>
-        <servlet-class>za.ac.tut.web.UpdateCustomerServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>ViewAccountsServlet</servlet-name>
-        <servlet-class>za.ac.tut.web.ViewAccountsServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>FindCustomerAccountServlet</servlet-name>
-        <servlet-class>za.ac.tut.web.FindCustomerAccountServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>UpdateAccountServlet</servlet-name>
-        <servlet-class>za.ac.tut.web.UpdateAccountServlet</servlet-class>
-    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/RegisterServlet.do</url-pattern>
@@ -279,38 +247,6 @@
     <servlet-mapping>
         <servlet-name>LoanReportServlet</servlet-name>
         <url-pattern>/LoanReportServlet.do</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ForgotPasswordServlet</servlet-name>
-        <url-pattern>/ForgotPasswordServlet.do</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ResetPasswordServlet</servlet-name>
-        <url-pattern>/ResetPasswordServlet.do</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>RemoveAccountServlet</servlet-name>
-        <url-pattern>/RemoveAccountServlet.do</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>GetAllCustomersServlet</servlet-name>
-        <url-pattern>/GetAllCustomersServlet.do</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>UpdateCustomerServlet</servlet-name>
-        <url-pattern>/UpdateCustomerServlet.do</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ViewAccountsServlet</servlet-name>
-        <url-pattern>/ViewAccountsServlet.do</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>FindCustomerAccountServlet</servlet-name>
-        <url-pattern>/FindCustomerAccountServlet.do</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>UpdateAccountServlet</servlet-name>
-        <url-pattern>/UpdateAccountServlet.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
