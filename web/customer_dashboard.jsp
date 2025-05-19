@@ -70,7 +70,7 @@
                 font-size: 16px;
             }
             .sidebar a {
-                color: #007BFF;
+                color: white;
                 text-decoration: none;
                 font-weight: 600;
                 font-size: 16px;
@@ -83,7 +83,7 @@
             .sidebar a:hover {
                 border-left: 3px solid #0056b3;
                 text-decoration: none;
-                color: #0056b3;
+                color: whitesmoke;
             }
             .content {
                 flex: 3;
@@ -129,6 +129,39 @@
                     border-bottom: 1px solid #e0e0e0;
                 }
             }
+            .header-logout {
+                color: white;
+                background-color: #007BFF;
+                text-decoration: none;
+                font-weight: bold;
+                padding: 8px 15px;
+                border: 1px solid white;
+                border-radius: 4px;
+                transition: background-color 0.3s;
+            }
+            .header-logout:hover {
+                background-color: rgba(255,255,255,0.2);
+            }
+            .action-link {
+                color: white;
+                display: block;
+                background: #007BFF;
+                text-decoration: none;
+                padding: 12px 25px;
+                border-radius: 5px;
+                transition: background-color 0.3s;
+                margin: 10px 0;
+                width: fit-content;
+                min-width: 200px;
+                font-weight: bold;
+                font-size: 16px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            }
+            .action-link:hover {
+                 background-color: #007BFF;
+            }
+
+
         </style>
     </head>
     <body>
@@ -137,25 +170,28 @@
         %>
         <div class="header">
             <h1>Welcome, <%=c.getBFullname()%></h1>
-            <form action="logoutServlet.do" method="post">
-                <button type="submit">Logout</button>
+            <form action="logoutServlet.do" method="POST">
+                <input type="submit" class="header-logout" value="Logout">
             </form>
+            <!--<a href="logoutServlet.do" method="POST" class="header-logout">Logout</a>-->
         </div>
         <div class="container">
-            <div class="sidebar">
-                <h2>Quick Actions</h2>
-                <p><a href="transfer.jsp">&#10148; Transfer Funds</a></p>
-                <p><a href="RetrieveAccountTypeServlet.do?customerId=<%= c.getBCustomerid() %>&source=deposit">&#10148; Deposit Money</a></p>
-                <p><a href="RetrieveAccountTypeServlet.do?customerId=<%= c.getBCustomerid() %>&source=withdraw">&#10148; Withdraw Money</a></p>
-                <p><a href="complaint.jsp?customerId=<%= c.getBCustomerid() %>">&#9888; Lodge Complaint</a></p>
-                <p><a href="ViewTransactionsHistoryServlet.do?customerId=<%= c.getBCustomerid() %>">&#128221; View Transactions</a></p>
-                <p><a href="checkBalanceServlet.do?customerId=<%= c.getBCustomerid() %>">&#128179; Account Balance</a></p>
-                <h2>Loan Application</h2>
-                <p><a href="loanApplication.jsp">&#128179; Apply for a Loan</a></p>
-                <p><a href="loanStatus.do?customerId=<%= c.getBCustomerid() %>">&#128221; View Loan Status</a></p>
-               <h2>Create an Account</h2>
-                <p><a href="selectAccountType.jsp?customerId=<%= c.getBCustomerid() %>">&#128179; Create an Account</a></p>
-            </div>
+        <div class="sidebar">
+            <h2>Quick Actions</h2>
+            <a href="transfer.jsp" class="action-link">Transfer Funds</a>
+            <a href="RetrieveAccountTypeServlet.do?customerId=<%= c.getBCustomerid() %>&source=deposit" class="action-link">Deposit Money</a>
+            <a href="RetrieveAccountTypeServlet.do?customerId=<%= c.getBCustomerid() %>&source=withdraw" class="action-link">Withdraw Money</a>
+            <a href="complaint.jsp?customerId=<%= c.getBCustomerid() %>" class="action-link">Lodge Complaint</a>
+            <a href="ViewTransactionsHistoryServlet.do?customerId=<%= c.getBCustomerid() %>" class="action-link">View Transactions</a>
+            <a href="checkBalanceServlet.do?customerId=<%= c.getBCustomerid() %>" class="action-link">Account Balance</a>
+
+            <h2>Loan Application</h2>
+            <a href="loanApplication.jsp" class="action-link">Apply for a Loan</a>
+            <a href="loanStatus.do?customerId=<%= c.getBCustomerid() %>" class="action-link">View Loan Status</a>
+
+            <h2>Create an Account</h2>
+            <a href="selectAccountType.jsp?customerId=<%= c.getBCustomerid() %>" class="action-link">Create an Account</a>
+        </div>
             <div class="content">
                 <h2>Dashboard Overview</h2>
                 <p class="welcome-text">
