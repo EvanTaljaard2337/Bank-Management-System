@@ -31,4 +31,6 @@ public interface BmLoanOfficerFacadeLocal {
     int count();
     
     BmLoanOfficer findByEmailAndPassword(String email,String password);
+    
+    BmLoanOfficer findByEmail(String email);
 }

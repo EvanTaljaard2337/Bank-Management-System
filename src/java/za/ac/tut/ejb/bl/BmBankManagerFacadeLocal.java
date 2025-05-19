@@ -31,4 +31,5 @@ public interface BmBankManagerFacadeLocal {
     int count();
     
     BmBankManager findByEmailAndPassword(String email,String password);
+    BmBankManager findByEmail(String email);
 }

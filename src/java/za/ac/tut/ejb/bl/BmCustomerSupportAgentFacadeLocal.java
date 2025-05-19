@@ -31,4 +31,5 @@ public interface BmCustomerSupportAgentFacadeLocal {
     int count();
    
     BmCustomerSupportAgent findByEmailAndPassword(String email,String password);
+    BmCustomerSupportAgent findByEmail(String email);
 }

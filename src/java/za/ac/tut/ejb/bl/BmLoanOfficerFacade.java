@@ -9,6 +9,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import za.ac.tut.entities.BmBankManager;
 import za.ac.tut.entities.BmLoanOfficer;
@@ -38,5 +39,12 @@ public class BmLoanOfficerFacade extends AbstractFacade<BmLoanOfficer> implement
         query.setParameter("password", password); // Ensure you hash the password in a real application
         List<BmLoanOfficer> results = query.getResultList();
         return results.isEmpty() ? null : results.get(0);
+    }
+    @Override
+    public BmLoanOfficer findByEmail(String email){
+        Query query = em.createNamedQuery("BmLoanOfficer.findByBEmail",BmLoanOfficer.class);
+        query.setParameter("bEmail",email);
+        BmLoanOfficer bankManager = (BmLoanOfficer)query.getSingleResult();
+        return bankManager;
     }
 }

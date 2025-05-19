@@ -35,4 +35,6 @@ public interface BmCustomerFacadeLocal {
     BmCustomer findIdByName(String name);
     
     BmCustomer findFullName(String fullName);
+    
+    BmCustomer findByEmail(String email);
 }

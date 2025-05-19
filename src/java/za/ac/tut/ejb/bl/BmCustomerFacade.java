@@ -9,6 +9,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import za.ac.tut.entities.BmCustomer;
 
@@ -52,5 +53,12 @@ public class BmCustomerFacade extends AbstractFacade<BmCustomer> implements BmCu
         query.setParameter("bFullname", fullName); // Correctly bind the parameter
         List<BmCustomer> results = query.getResultList();
         return results.isEmpty() ? null : results.get(0);
+    }
+    @Override
+    public BmCustomer findByEmail(String email){
+        Query query = em.createNamedQuery("BmCustomer.findByBEmail",BmCustomer.class);
+        query.setParameter("bEmail",email);
+        BmCustomer bankManager = (BmCustomer)query.getSingleResult();
+        return bankManager;
     }
 }

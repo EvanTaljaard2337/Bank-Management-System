@@ -9,6 +9,7 @@ import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import za.ac.tut.entities.BmCustomerSupportAgent;
 
@@ -38,5 +39,12 @@ public class BmCustomerSupportAgentFacade extends AbstractFacade<BmCustomerSuppo
         query.setParameter("password", password); // Ensure you hash the password in a real application
         List<BmCustomerSupportAgent> results = query.getResultList();
         return results.isEmpty() ? null : results.get(0);
+    }
+    @Override
+    public BmCustomerSupportAgent findByEmail(String email){
+        Query query = em.createNamedQuery("BmCustomerSupportAgent.findByBEmail",BmCustomerSupportAgent.class);
+        query.setParameter("bEmail",email);
+        BmCustomerSupportAgent bankManager = (BmCustomerSupportAgent)query.getSingleResult();
+        return bankManager;
     }
 }
