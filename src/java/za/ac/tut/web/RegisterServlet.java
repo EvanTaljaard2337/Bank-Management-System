@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import za.ac.tut.ejb.bl.BmCustomerFacadeLocal;
+import za.ac.tut.entities.BmBankManager;
 import za.ac.tut.entities.BmCustomer;
 
 /**
@@ -30,6 +31,9 @@ public class RegisterServlet extends HttpServlet {
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         
+        BmBankManager manager = (BmBankManager)session.getAttribute("manager");
+        
+        String source = request.getParameter("source");
         String fullName = request.getParameter("fullName");
         String id = request.getParameter("id");
         String email = request.getParameter("email");
@@ -37,14 +41,28 @@ public class RegisterServlet extends HttpServlet {
         String address = request.getParameter("address");
         String phone = request.getParameter("phone");
         
+        
         try{
-            BmCustomer c = register(fullName,email,password,address,phone,id);
-            af1.create(c);
+            if(source.equals("manager") && source!=null){
+                BmCustomer c = register(fullName,email,password,address,phone,id);
+                af1.create(c);
 
-            session.setAttribute("customer",c);
-            request.setAttribute("customer",c);
-            RequestDispatcher disp = request.getRequestDispatcher("customer_dashboard.jsp");
-            disp.forward(request,response);
+                session.setAttribute("manager",manager);
+                request.setAttribute("manager",manager);
+                session.setAttribute("customer",c);
+                request.setAttribute("customer",c);
+                RequestDispatcher disp = request.getRequestDispatcher("add_customer_outcome.jsp");
+                disp.forward(request,response);
+            }
+            else{
+                BmCustomer c = register(fullName,email,password,address,phone,id);
+                af1.create(c);
+
+                session.setAttribute("customer",c);
+                request.setAttribute("customer",c);
+                RequestDispatcher disp = request.getRequestDispatcher("customer_dashboard.jsp");
+                disp.forward(request,response);
+            }
         }
         catch(Exception e){
             e.printStackTrace();
