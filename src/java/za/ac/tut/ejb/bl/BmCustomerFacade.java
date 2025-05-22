@@ -8,6 +8,7 @@ package za.ac.tut.ejb.bl;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -56,9 +57,12 @@ public class BmCustomerFacade extends AbstractFacade<BmCustomer> implements BmCu
     }
     @Override
     public BmCustomer findByEmail(String email){
-        Query query = em.createNamedQuery("BmCustomer.findByBEmail",BmCustomer.class);
-        query.setParameter("bEmail",email);
-        BmCustomer bankManager = (BmCustomer)query.getSingleResult();
-        return bankManager;
+        try{
+            Query query = em.createNamedQuery("BmCustomer.findByBEmail",BmCustomer.class);
+            query.setParameter("bEmail",email);
+            return (BmCustomer)query.getSingleResult();
+        }catch(NoResultException e){
+            return null;
+        }
     }
 }

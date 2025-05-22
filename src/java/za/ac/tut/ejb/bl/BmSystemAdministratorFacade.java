@@ -8,6 +8,7 @@ package za.ac.tut.ejb.bl;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -42,9 +43,14 @@ public class BmSystemAdministratorFacade extends AbstractFacade<BmSystemAdminist
     }
     @Override
     public BmSystemAdministrator findByEmail(String email){
-        Query query = em.createNamedQuery("BmSystemAdministrator.findByBEmail",BmSystemAdministrator.class);
-        query.setParameter("bEmail",email);
-        BmSystemAdministrator bankManager = (BmSystemAdministrator)query.getSingleResult();
-        return bankManager;
+        try{
+            Query query = em.createNamedQuery("BmSystemAdministrator.findByBEmail",BmSystemAdministrator.class);
+            query.setParameter("bEmail",email);
+            BmSystemAdministrator bankManager = (BmSystemAdministrator)query.getSingleResult();
+            return bankManager;
+        }
+        catch(NoResultException e){
+            return null;
+        }
     }
 }

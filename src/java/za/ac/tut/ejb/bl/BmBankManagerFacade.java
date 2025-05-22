@@ -8,6 +8,7 @@ package za.ac.tut.ejb.bl;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -40,10 +41,13 @@ public class BmBankManagerFacade extends AbstractFacade<BmBankManager> implement
         return results.isEmpty() ? null : results.get(0);
     }
     @Override
-    public BmBankManager findByEmail(String email){
-        Query query = em.createNamedQuery("BmBankManager.findByBEmail",BmBankManager.class);
-        query.setParameter("bEmail",email);
-        BmBankManager bankManager = (BmBankManager)query.getSingleResult();
-        return bankManager;
+    public BmBankManager findByEmail(String email) {
+        try {
+            Query query = em.createNamedQuery("BmBankManager.findByBEmail", BmBankManager.class);
+            query.setParameter("bEmail", email);
+            return (BmBankManager) query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;  // No entity found, return null safely
+        }
     }
 }

@@ -69,11 +69,20 @@ public class BmLoanOfficer implements Serializable {
         this.bOfficerid = bOfficerid;
     }
 
-    public BmLoanOfficer(Integer bOfficerid, String bFullname, String bEmail, String bPhone) {
+    public BmLoanOfficer(Integer bOfficerid, String bFullname, String bEmail, String bPhone,String bPassword) {
         this.bOfficerid = bOfficerid;
         this.bFullname = bFullname;
         this.bEmail = bEmail;
         this.bPhone = bPhone;
+        this.bPassword=bPassword;
+    }
+
+    public String getbPassword() {
+        return bPassword;
+    }
+
+    public void setbPassword(String bPassword) {
+        this.bPassword = bPassword;
     }
 
     public Integer getBOfficerid() {

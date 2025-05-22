@@ -69,18 +69,25 @@ public class BmBankManager implements Serializable {
     public BmBankManager(Integer bManagerid) {
         this.bManagerid = bManagerid;
     }
-
-    public BmBankManager(Integer bManagerid, String bFullname, String bEmail, String bPhone) {
+    public BmBankManager(Integer bManagerid, String bFullname, String bEmail, String bPhone,String bPassword) {
         this.bManagerid = bManagerid;
         this.bFullname = bFullname;
         this.bEmail = bEmail;
         this.bPhone = bPhone;
+        this.bPassword=bPassword;
     }
 
     public Integer getBManagerid() {
         return bManagerid;
     }
 
+    public String getbPassword() {
+        return bPassword;
+    }
+
+    public void setbPassword(String bPassword) {
+        this.bPassword = bPassword;
+    }
     public void setBManagerid(Integer bManagerid) {
         this.bManagerid = bManagerid;
     }
