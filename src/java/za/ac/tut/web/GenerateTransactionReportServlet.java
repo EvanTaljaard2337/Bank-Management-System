@@ -4,8 +4,13 @@
  */
 package za.ac.tut.web;
 
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.text.ParseException;
@@ -53,9 +58,11 @@ public class GenerateTransactionReportServlet extends HttpServlet {
             // Query your service/database to get the report data
             List<BmTransaction> transactions = filteredTransaction(accountNumber,transactionType,startDate,endDate);
             
-            if("text".equals(export)){
-                exportToText(transactions,response);
-            }
+        if ("pdf".equals(export)) {
+            exportToPdf(transactions, response);
+            return; // Stop further processing after export
+        }
+
             // Set results in request and forward to JSP for display
             request.setAttribute("transactions", transactions);
             request.getRequestDispatcher("generate_transaction_report_outcome.jsp").forward(request, response);
@@ -93,7 +100,7 @@ public class GenerateTransactionReportServlet extends HttpServlet {
             }
         }
         return filtered;
-    }
+    }/*
     private void exportToText(List<BmTransaction> activities, HttpServletResponse response) throws IOException {
         if (activities == null || activities.isEmpty()) {
             return;
@@ -126,5 +133,44 @@ public class GenerateTransactionReportServlet extends HttpServlet {
             e.printStackTrace();
             throw new IOException("Error exporting loan data", e);
         }
+    }*/
+    private void exportToPdf(List<BmTransaction> transactions, HttpServletResponse response) throws IOException {
+        if (transactions == null || transactions.isEmpty()) {
+            response.getWriter().write("No transactions found for export.");
+            return;
+        }
+
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "attachment; filename=Transaction_Report.pdf");
+
+        try (OutputStream out = response.getOutputStream()) {
+            PdfWriter writer = new PdfWriter(out);
+            PdfDocument pdf = new PdfDocument(writer);
+            Document document = new Document(pdf);
+
+            document.add(new Paragraph("Transaction Report").setBold().setFontSize(18));
+            document.add(new Paragraph("Generated on: " + java.time.LocalDateTime.now()));
+            document.add(new Paragraph("=====================================\n"));
+
+            for (BmTransaction transaction : transactions) {
+                document.add(new Paragraph("Transaction ID: " + transaction.getBTransactionid()));
+                if (transaction.getBAccountid() != null) {
+                    document.add(new Paragraph("Account ID: " + transaction.getBAccountid().getBAccountid()));
+                } else {
+                    document.add(new Paragraph("Account ID: Not available"));
+                }
+                document.add(new Paragraph("Account Type: " + transaction.getBTransactiontype()));
+                document.add(new Paragraph("Amount: " + transaction.getBAmount()));
+                document.add(new Paragraph("Date: " + transaction.getBTransactiondate()));
+                document.add(new Paragraph("Description: No Description"));
+                document.add(new Paragraph("-------------------------------------\n"));
+            }
+
+            document.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IOException("Error generating PDF", e);
+        }
     }
+
 }

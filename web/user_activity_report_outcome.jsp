@@ -1,3 +1,4 @@
+<%@page import="za.ac.tut.entities.BmBankManager"%>
 <%@page import="za.ac.tut.entities.UserActivity"%>
 <%@page import="java.util.List"%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
@@ -14,6 +15,13 @@
             margin: 0;
             padding: 0;
         }
+        .header {
+            background: #007BFF;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
         .container {
             max-width: 800px;
             margin: 30px auto;
@@ -21,12 +29,6 @@
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
             padding: 30px;
-        }
-        .header {
-            background: #007BFF;
-            color: white;
-            padding: 15px;
-            text-align: center;
         }
         table {
             width: 100%;
@@ -50,11 +52,6 @@
             font-size: 14px;
             margin-top: 40px;
         }
-        .export-button-container {
-            display: flex;
-            justify-content: center;
-            margin-top: 30px;
-        }
         .export-button {
             padding: 12px 25px;
             background-color: #007BFF;
@@ -68,15 +65,35 @@
         .export-button:hover {
             background-color: #0056b3;
         }
+        .nav-links {
+            margin-top: 30px;
+            text-align: center;
+        }
+        .nav-links a, .nav-links button {
+            background: #007BFF;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: bold;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+        .nav-links a:hover, .nav-links button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="header">
-        <h1>User Activity Report</h1>
-    </div>
+<div class="header">
+    <h1>User Activity Report</h1>
+</div>
 
+<div class="container">
     <table>
         <thead>
             <tr>
@@ -88,27 +105,32 @@
         </thead>
         <tbody>
             <%
+                BmBankManager m = (BmBankManager)session.getAttribute("manager");
+                if (m.getBFullname() == null) {
+                    response.sendRedirect("index.html");
+                    return;
+                }
                 List<UserActivity> activities = (List<UserActivity>)request.getAttribute("activities");
                 if (activities != null && !activities.isEmpty()) {
-                    for (UserActivity u : activities) {
+                    for (User Activity u : activities) {
             %>
             <tr>
-                <td><%= u.getUserId() %></td>
+                <td><%= u.getUser Id() %></td>
                 <td><%= u.getActivityType() %></td>
                 <td><%= u.getActivityTime() %></td>
-            <td>
-                <%
-                    if (u.getAdministrator() != null && u.getAdministrator().getBFullname() != null) {
-                %>
+                <td>
+                    <%
+                        if (u.getAdministrator() != null && u.getAdministrator().getBFullname() != null) {
+                    %>
                         <%= u.getAdministrator().getBFullname() %>
-                <%
-                    } else {
-                %>
-                        <%="N/A" %>
-                <%
-                    }
-                %>
-            </td>
+                    <%
+                        } else {
+                    %>
+                        N/A
+                    <%
+                        }
+                    %>
+                </td>
             </tr>
             <%
                     }
@@ -123,27 +145,26 @@
         </tbody>
     </table>
 
-    <%
-        if (activities != null && !activities.isEmpty()) {
-    %>
-    <div class="export-button-container">
-        <form method="post" action="UserActivityReportServlet.do">
-            <input type="hidden" name="export" value="text">
-            <input type="hidden" name="userId" value="<%= request.getParameter("userId") != null ? request.getParameter("userId") : "" %>">
-            <input type="hidden" name="activityType" value="<%= request.getParameter("activityType") != null ? request.getParameter("activityType") : "" %>">
-            <input type="hidden" name="startDate" value="<%= request.getParameter("startDate") != null ? request.getParameter("startDate") : "" %>">
-            <input type="hidden" name="endDate" value="<%= request.getParameter("endDate") != null ? request.getParameter("endDate") : "" %>">
-            <input type="hidden" name="manager" value="<%= request.getParameter("manager") != null ? request.getParameter("manager") : "" %>">
-            <input class="export-button" type="submit" value="Export as Text File">
-        </form>
-    </div>
-    <%
-        }
-    %>
+    <% if (activities != null && !activities.isEmpty()) { %>
+        <div class="nav-links">
+            <a href="user_activity_report.jsp">Back to filter</a>
+            <a href="bankManagerDashboard.jsp">Back to Dashboard</a>
+            
+            <form method="post" action="User ActivityReportServlet.do" style="display: inline;">
+                <input type="hidden" name="export" value="pdf">
+                <input type="hidden" name="userId" value="<%= request.getParameter("userId") != null ? request.getParameter("userId") : "" %>">
+                <input type="hidden" name="activityType" value="<%= request.getParameter("activityType") != null ? request.getParameter("activityType") : "" %>">
+                <input type="hidden" name="startDate" value="<%= request.getParameter("startDate") != null ? request.getParameter("startDate") : "" %>">
+                <input type="hidden" name="endDate" value="<%= request.getParameter("endDate") != null ? request.getParameter("endDate") : "" %>">
+                <input type="hidden" name="manager" value="<%= request.getParameter("manager") != null ? request.getParameter("manager") : "" %>">
+                <button type="submit" class="export-button">Export as Pdf File</button>
+            </form>
+        </div>
+    <% } %>
+</div>
 
-    <div class="footer">
-        &copy; 2025 Your Bank Name | Manager Portal
-    </div>
+<div class="footer">
+    &copy; 2025 Your Bank Name | Manager Portal
 </div>
 
 </body>

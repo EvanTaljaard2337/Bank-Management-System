@@ -87,12 +87,12 @@
             .nav-links a {
                 display: inline-block;
                 margin: 0 10px;
-                color: #007BFF;
+                color: white;
                 text-decoration: none;
                 font-weight: bold;
             }
             .nav-links a:hover {
-                text-decoration: underline;
+                background-color: #0056b3;
             }
             .footer {
                 text-align: center;
@@ -111,6 +111,7 @@
                 font-size: 14px;
                 cursor: pointer;
                 transition: background-color 0.3s;
+                font-weight: bold;
             }
 
             button:hover, .export-button:hover {
@@ -138,12 +139,13 @@
                 <tbody>
                     <%
                         List<BmTransaction> transactions = (List<BmTransaction>)request.getAttribute("transactions");
+                        if(transactions != null){
                         for(BmTransaction t : transactions) {
-                            Integer tID = t.getBTransactionid();
-                            Integer accID = t.getBAccountid().getBAccountid();
-                            String tType = t.getBTransactiontype();
-                            BigDecimal amount = t.getBAmount();
-                            Date tDate = t.getBTransactiondate();
+                                Integer tID = t.getBTransactionid();
+                                Integer accID = t.getBAccountid().getBAccountid();
+                                String tType = t.getBTransactiontype();
+                                BigDecimal amount = t.getBAmount();
+                                Date tDate = t.getBTransactiondate();
                     %>
                     <tr>
                         <td><%=tID%></td>
@@ -153,14 +155,19 @@
                         <td><%=tDate%></td>
                     </tr>
                     <%
+                            }
+                        }else{
+                    %>
+                            <p>No Data found</p>
+                    <%
                         }
                     %>
                 </tbody>
             </table>
             
             <div class="nav-links">
-                <a href="view_transactions.jsp">Back to Filter</a>
-                <a href="index.html">Main Page</a>
+                <a href="view_transactions.jsp" class="export-button">Back to Filter</a>
+                <a href="bankManagerDashboard.jsp" class="export-button">Main Page</a>
                 <% 
                     String filter = (String) session.getAttribute("filter");
                     String filterVal = (String) session.getAttribute("filter_val");
@@ -171,8 +178,8 @@
                 <form method="GET" action="ViewTransactionsServlet.do" style="display: inline;">
                     <input type="hidden" name="filter" value="<%= session.getAttribute("filter") != null ? session.getAttribute("filter") : "" %>">
                     <input type="hidden" name="filter_val" value="<%= session.getAttribute("filter_val") != null ? session.getAttribute("filter_val") : "" %>">
-                    <input type="hidden" name="export" value="text">
-                    <button type="submit" class="export-button" style="margin-left: 10px;">Export as Text File</button>
+                    <input type="hidden" name="export" value="pdf">
+                    <button type="submit" class="export-button" style="margin-left: 10px;">Export Pdf File</button>
                 </form>
                 <% } %>
             </div>

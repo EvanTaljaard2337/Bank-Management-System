@@ -1,20 +1,21 @@
+<%@page import="za.ac.tut.entities.*"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Error Occurred</title>
+    <title>Error Page</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f0f4f8;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
             margin: 0;
             padding: 0;
         }
         .header {
-            background: #dc3545; /* Red color for error */
+            background: #007BFF;
             color: white;
-            padding: 15px 30px;
+            padding: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -38,41 +39,42 @@
         }
         .container {
             max-width: 700px;
-            margin: 40px auto;
+            margin: 60px auto;
             background: white;
+            padding: 40px 30px;
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            padding: 40px 50px;
             text-align: center;
         }
         .container h2 {
-            color: #c0392b;
+            color: #007BFF;
+            font-size: 26px;
             margin-bottom: 25px;
-            font-size: 28px;
-            font-weight: 700;
         }
         .error-message {
-            color: #dc3545; /* Red color for error messages */
-            font-size: 18px;
-            margin-bottom: 10px;
-            font-weight: 600;
+            color: #dc3545;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
         }
         .error-details {
             font-size: 16px;
-            color: #2c3e50;
+            color: #333;
             margin-bottom: 30px;
-            word-wrap: break-word;
             white-space: pre-wrap;
+            word-break: break-word;
         }
         .dashboard-link {
             display: inline-block;
             background-color: #007BFF;
             color: white;
             padding: 12px 25px;
-            border-radius: 6px;
+            border-radius: 5px;
             text-decoration: none;
-            font-weight: 600;
-            transition: background-color 0.3s ease;
+            font-weight: bold;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
         .dashboard-link:hover {
             background-color: #0056b3;
@@ -85,6 +87,12 @@
             font-size: 14px;
             margin-top: 60px;
         }
+        @media (max-width: 768px) {
+            .container {
+                margin: 30px 20px;
+                padding: 30px 20px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -95,15 +103,45 @@
 
     <div class="container">
         <h2>An Error Occurred</h2>
-        <p class="error-message">Debugger Logs:</p>
         <%
             String errMsg = (String) request.getAttribute("errMsg");
             if (errMsg == null || errMsg.trim().isEmpty()) {
                 errMsg = "No additional error information provided.";
             }
         %>
-        <p class="error-details"><b><%= errMsg %></b></p>
-        <a class="dashboard-link" href="customer_dashboard.jsp">Go to Dashboard</a>
+        <p class="error-details"><%= errMsg %></p>
+
+        <%
+            BmCustomer cust = (BmCustomer) session.getAttribute("customer");
+            BmSystemAdministrator admin = (BmSystemAdministrator) session.getAttribute("admin");
+            BmBankManager manager = (BmBankManager) session.getAttribute("manager");
+            BmCustomerSupportAgent agent = (BmCustomerSupportAgent) session.getAttribute("support_agent");
+            BmLoanOfficer officer = (BmLoanOfficer) session.getAttribute("officer");
+        %>
+
+        <%
+            if (cust != null) {
+        %>
+            <a class="dashboard-link" href="customer_dashboard.jsp">Back to Dashboard</a>
+        <%
+            } else if (admin != null) {
+        %>
+            <a class="dashboard-link" href="adminDashboard.jsp">Back to Dashboard</a>
+        <%
+            } else if (manager != null) {
+        %>
+            <a class="dashboard-link" href="bankManagerDashboard.jsp">Back to Dashboard</a>
+        <%
+            } else if (agent != null) {
+        %>
+            <a class="dashboard-link" href="supportAgentDashboard.jsp">Back to Dashboard</a>
+        <%
+            } else if (officer != null) {
+        %>
+            <a class="dashboard-link" href="loanOfficerDashboard.jsp">Back to Dashboard</a>
+        <%
+            }
+        %>
     </div>
 
     <div class="footer">

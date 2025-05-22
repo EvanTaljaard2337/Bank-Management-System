@@ -26,10 +26,14 @@
                 align-items: center;
                 box-shadow: 0 2px 6px rgba(0,0,0,0.2);
             }
+
             .header h1 {
                 margin: 0;
                 font-size: 24px;
+                flex-grow: 1; /* Allow the title to take up available space */
+                text-align: center; /* Center the title */
             }
+
             .header a {
                 color: white;
                 text-decoration: none;
@@ -52,7 +56,7 @@
             }
             .form-title {
                 margin-top: 0;
-                color: #333;
+                color: #007BFF;
             }
             .form-instruction {
                 font-size: 16px;
@@ -63,10 +67,11 @@
                 margin-bottom: 20px;
             }
             .form-group label {
-                display: block;
-                margin-bottom: 8px;
                 font-weight: bold;
-                color: #333;
+                color: #555;
+                margin-bottom: 10px;
+                display: block;
+                font-size: 16px;
             }
             .form-group select,
             .form-group input[type="text"] {
@@ -87,7 +92,8 @@
                 border-radius: 4px;
                 cursor: pointer;
                 font-size: 16px;
-                width: 100%;
+                font-weight: bold;
+                width: 30%;
                 transition: background-color 0.3s;
             }
             .submit-btn:hover {
@@ -101,6 +107,37 @@
                 font-size: 14px;
                 margin-top: 40px;
             }
+            h2 {
+                text-align: center;
+                color: #007BFF;
+                font-size: 26px;
+                margin-bottom: 30px;
+            }
+            .header-btn {
+                color: white;
+                text-decoration: none;
+                font-weight: bold;
+                padding: 8px 15px;
+                border: 1px solid white;
+                border-radius: 4px;
+                transition: background-color 0.3s;
+                margin-left: 10px; /* Add some space between the title and the button */
+            }
+
+            .header-btn:hover {
+                background-color: rgba(255,255,255,0.2);
+            }
+        .button-wrapper {
+            display: flex; /* Make this a flex container */
+            justify-content: center; /* Center the button horizontally */
+            margin-top: 20px; /* Optional: Add some space above the button */
+        }
+
+
+        .button-wrapper button:hover {
+            background-color: #0056b3;
+        }
+
         </style>
 <script>
         function toggleFilterValue() {
@@ -120,6 +157,7 @@
 </head>
 <body>
     <div class="header">
+        <a href="bankManagerDashboard.jsp" class="header-btn">Home</a>
         <h1>Transaction Records</h1>
         <a href="index.html">Logout</a>
     </div>
@@ -139,7 +177,9 @@
                 <label for="filter_val">Provide filter value:</label>
                 <input type="text" name="filter_val" id="filter_val" required/>
             </div>
-            <input type="submit" value="VIEW" class="submit-btn"/>
+            <div class="button-wrapper">
+                <button type="submit" class="submit-btn">View Transactions</button>
+            </div>
         </form>
     </div>
     <div class="footer">

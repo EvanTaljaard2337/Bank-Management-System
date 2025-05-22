@@ -40,8 +40,15 @@ public class RegisterServlet extends HttpServlet {
         String password = request.getParameter("password");
         String address = request.getParameter("address");
         String phone = request.getParameter("phone");
-        
-        
+        String formatedPhone = "";
+        if(phone!=null){
+            formatedPhone=formatPhone(phone);
+        }
+        else{
+            request.setAttribute("errMsg", "Your phone number was not provided!");
+            RequestDispatcher disp = request.getRequestDispatcher("error.jsp");
+            disp.forward(request,response);
+        }
         try{
             if(source.equals("manager") && source!=null){
                 BmCustomer c = register(fullName,email,password,address,phone,id);
@@ -80,6 +87,16 @@ public class RegisterServlet extends HttpServlet {
         c.setBPassword(password);
         c.setBPhone(phone);
         return c;
+    }
+    private String formatPhone(String phone) {
+        StringBuilder formattedNumber = new StringBuilder();
+        for (int i = 0; i < phone.length(); i++) {
+            formattedNumber.append(phone.charAt(i));
+            if (i == 2 || i == 5) {
+                formattedNumber.append("-");
+            }
+        }
+        return formattedNumber.toString();
     }
 }
 

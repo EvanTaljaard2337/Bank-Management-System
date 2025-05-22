@@ -1,9 +1,16 @@
 package za.ac.tut.web;
 
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
@@ -17,6 +24,7 @@ import za.ac.tut.ejb.bl.BmTransactionFacadeLocal;
 import za.ac.tut.entities.BmTransaction;
 
 public class ViewTransactionsServlet extends HttpServlet {
+    private static final DateTimeFormatter fmt = DateTimeFormatter.ISO_LOCAL_DATE;
     @EJB
     private BmTransactionFacadeLocal tfl;
 
@@ -47,18 +55,11 @@ public class ViewTransactionsServlet extends HttpServlet {
             return;
         }
         List<BmTransaction> filteredBmTransactions = getTransactions(filter, filterValue);
-                // Check if filterValue is null or empty for other filters
-        if (filteredBmTransactions == null || filteredBmTransactions.isEmpty()) {
-            request.setAttribute("errMsg", "No transactions found for export.");
-            RequestDispatcher disp = request.getRequestDispatcher("error.jsp");
-            disp.forward(request, response);
-            return;
-        }
         try{
             // Check if the export parameter is set to "text"
-            if ("text".equals(export)) {
+            if ("pdf".equals(export)) {
                 try{
-                    exportToText(filteredBmTransactions, response);
+                    exportToPdf(response,filteredBmTransactions);
                     return; // Exit after exporting to avoid forwarding
                 }
                 catch(Exception e){
@@ -68,6 +69,11 @@ public class ViewTransactionsServlet extends HttpServlet {
                     disp.forward(request, response);
                 }
             }
+            else if ("pdf".equals(export)) {
+                exportToPdf(response, filteredBmTransactions);
+                return;
+            }
+
             session.setAttribute("transactions", filteredBmTransactions);
             request.setAttribute("transactions", filteredBmTransactions);
             RequestDispatcher disp = request.getRequestDispatcher("view_transactions_outcome.jsp");
@@ -113,7 +119,7 @@ public class ViewTransactionsServlet extends HttpServlet {
         }
 
         return filteredTransactions;
-    }
+    }/*
     private void exportToText(List<BmTransaction> activities, HttpServletResponse response) throws IOException {
         if (activities == null || activities.isEmpty()) {
             response.getWriter().write("No transactions found for export.");
@@ -146,5 +152,38 @@ public class ViewTransactionsServlet extends HttpServlet {
             e.printStackTrace();
             throw new IOException("Error exporting transaction data", e);
         }
+    }*/
+    private void exportToPdf(HttpServletResponse response, List<BmTransaction> transactions) throws IOException {
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "attachment; filename=Transaction_Report.pdf");
+
+        try (OutputStream out = response.getOutputStream()) {
+            PdfWriter writer = new PdfWriter(out);
+            PdfDocument pdf = new PdfDocument(writer);
+            Document document = new Document(pdf);
+
+            document.add(new Paragraph("Transaction Report").setBold().setFontSize(18));
+            document.add(new Paragraph("Generated on: " + java.time.LocalDateTime.now()));
+            document.add(new Paragraph("=====================================\n"));
+
+            for (BmTransaction transaction : transactions) {
+                document.add(new Paragraph("Transaction ID: " + transaction.getBTransactionid()));
+                if (transaction.getBAccountid() != null) {
+                    document.add(new Paragraph("Account ID: " + transaction.getBAccountid().getBAccountid()));
+                } else {
+                    document.add(new Paragraph("Account ID: Not available"));
+                }
+                document.add(new Paragraph("Transaction Type: " + transaction.getBTransactiontype()));
+                document.add(new Paragraph("Amount: " + transaction.getBAmount()));
+                document.add(new Paragraph("Date: " + transaction.getBTransactiondate()));
+                document.add(new Paragraph("-------------------------------------\n"));
+            }
+
+            document.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IOException("Error generating PDF", e);
+        }
     }
+
 }

@@ -4,6 +4,7 @@
     Author     : Evan
 --%>
 
+<%@page import="za.ac.tut.entities.BmBankManager"%>
 <%@page import="za.ac.tut.entities.BmCustomer"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -92,12 +93,13 @@
         </div>
         <div class="container">
             <%
+                BmBankManager m = (BmBankManager)session.getAttribute("manager");
                 String msg = (String)request.getAttribute("message");
             %>
             <div class="success-message">
-                <p>The user with ID <span class="highlight"><%=msg%></span> has been successfully removed from the database.</p>
+                <p>The users account ID <span class="highlight"><%=msg%></span> has been successfully removed from the database.</p>
             </div>
-            <a href="index.html" class="return-link">Return to Home Page</a>
+            <a href="bankManagerDashboard.jsp" class="return-link">Return to Home Page</a>
         </div>
         <div class="footer">
             &copy; 2025 Your Bank Name | Admin Support

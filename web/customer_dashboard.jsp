@@ -207,7 +207,7 @@
             </div>
         </div>
         <div class="footer">
-            &copy; 2025 Your Bank Name | Contact Support: support@yourbank.com | Phone: 123-456-7890
+            &copy; 2025 BMS | Contact Support: support@bms.com | Phone: 123-456-7890
         </div>
     </body>
 </html>

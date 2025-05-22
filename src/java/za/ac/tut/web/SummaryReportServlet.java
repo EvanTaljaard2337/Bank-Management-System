@@ -4,6 +4,9 @@
  */
 package za.ac.tut.web;
 
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.element.Paragraph;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -15,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.crypto.Data;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -22,6 +26,14 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.UndoableEditListener;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+
+import javax.swing.text.Element;
+import javax.swing.text.Position;
+import javax.swing.text.Segment;
 import za.ac.tut.ejb.bl.BmAccountFacadeLocal;
 import za.ac.tut.ejb.bl.BmComplaintFacadeLocal;
 import za.ac.tut.ejb.bl.BmCustomerFacadeLocal;
@@ -30,6 +42,11 @@ import za.ac.tut.ejb.bl.BmTransactionFacadeLocal;
 import za.ac.tut.entities.BmComplaint;
 import za.ac.tut.entities.BmCustomer;
 import za.ac.tut.entities.BmTransaction;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
+
 /**
  *
  * @author Evan
@@ -57,16 +74,32 @@ public class SummaryReportServlet extends HttpServlet {
         String endDateParam = request.getParameter("endDate");
         String unresolvedComplaintString = "Pending";
         String loanStatus = request.getParameter("loanStatus");
+        String custId = request.getParameter("customerId");
         
-        
-        Integer customerId = Integer.parseInt(request.getParameter("customerId"));
-
+        Integer customerId = 0;
+        if(custId!=null && !custId.trim().isEmpty()){
+            customerId = Integer.parseInt(custId);
+        }
+        else{
+            request.setAttribute("errMsg","Customer ID Does not exist");
+            RequestDispatcher disp = request.getRequestDispatcher("error.jsp");
+            disp.forward(request,response);
+            return;
+        }
         BmCustomer customer = findCustomerId(customerId);
+        if(customer==null){
+            request.setAttribute("errMsg","Customer ID Does not exist");
+            RequestDispatcher disp = request.getRequestDispatcher("error.jsp");
+            disp.forward(request,response);
+            return;
+        }
         if(!validateCustomer(customerId)){
             request.setAttribute("errMsg","Invalid Customer ID");
             RequestDispatcher disp = request.getRequestDispatcher("error.jsp");
             disp.forward(request,response);
+            return;
         }
+        
         double outstandingLoans = lfl.getOutstandingLoans(customer, loanStatus);
                 
         try{
@@ -89,8 +122,8 @@ public class SummaryReportServlet extends HttpServlet {
             request.setAttribute("totalTransactions",tfl.getTotalTransactions(startDate, endDate));
             
             String export = request.getParameter("export");
-            if ("text".equals(export)) {
-                        exportToText(response, startDate, endDate, afl.count(), tfl.getTotalDeposits(startDate, endDate), 
+            if ("pdf".equals(export)) {
+                        exportToPdf(response, startDate, endDate, afl.count(), tfl.getTotalDeposits(startDate, endDate), 
                           tfl.getTotalWithdrawals(startDate,endDate), lfl.cntLoans(loanStatus), outstandingLoans, 
                           cfl.findAll().size(), getComplaints(unresolvedComplaintString), tfl.getTotalTransactions(startDate, endDate));
                 
@@ -127,34 +160,52 @@ public class SummaryReportServlet extends HttpServlet {
     }
     private BmCustomer findCustomerId(Integer id){
         BmCustomer customer = dfl.find(id);
-        customer.getBCustomerid();
+        if(customer!=null){
+            customer.getBCustomerid();
+        }
         return customer;
     }
-    private void exportToText(HttpServletResponse response, LocalDate startDate, LocalDate endDate, 
-                             int totalAccounts, double totalDeposits, double totalWithdrawals, 
-                             int totalLoansApproved, double outstandingLoans, 
-                             int totalComplaints, int unresolvedComplaints, 
-                             int totalTransactions) throws IOException {
-       // Set the content type and attachment header for text file download
-       response.setContentType("text/plain");
-       response.setHeader("Content-Disposition", "attachment; filename=SummaryReport.txt");
-       try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(response.getOutputStream()))) {
-           writer.write("Summary Report\n");
-           writer.write("Report Period: " + startDate.format(fmt) + " to " + endDate.format(fmt) + "\n");
-           writer.write("Generated on: " + java.time.LocalDateTime.now() + "\n");
-           writer.write("=====================================\n");
-           writer.write("Total Active Accounts: " + totalAccounts + "\n");
-           writer.write("Total Deposits: " + totalDeposits + "\n");
-           writer.write("Total Withdrawals: " + totalWithdrawals + "\n");
-           writer.write("Total Loans Approved: " + totalLoansApproved + "\n");
-           writer.write("Total Outstanding Loans: " + outstandingLoans + "\n");
-           writer.write("Total Customer Complaints: " + totalComplaints + "\n");
-           writer.write("Unresolved Complaints: " + unresolvedComplaints + "\n");
-           writer.write("Total Transactions: " + totalTransactions + "\n");
-           writer.write("-------------------------------------\n");
-       } catch (IOException e) {
-           e.printStackTrace();
-           throw new IOException("Error exporting summary report", e);
-       }
-   }
+     public void exportToPdf(HttpServletResponse response, LocalDate startDate, LocalDate endDate,
+                            int totalAccounts, double totalDeposits, double totalWithdrawals,
+                            int totalLoansApproved, double outstandingLoans,
+                            int totalComplaints, int unresolvedComplaints,
+                            int totalTransactions) throws IOException {
+
+        // Set the content type and headers
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "attachment; filename=SummaryReport.pdf");
+
+        try {
+            OutputStream out = response.getOutputStream();
+
+            // Initialize PDF writer and document
+            PdfWriter writer = new PdfWriter(out);
+            PdfDocument pdf = new PdfDocument(writer);
+            Document document = new Document(pdf);
+      
+
+            // Add content
+            document.add(new Paragraph("Summary Report").setBold().setFontSize(18));
+            document.add(new Paragraph("Report Period: " + startDate.format(fmt) + " to " + endDate.format(fmt)));
+            document.add(new Paragraph("Generated on: " + java.time.LocalDateTime.now()));
+            document.add(new Paragraph("====================================="));
+
+            document.add(new Paragraph("Total Active Accounts: " + totalAccounts));
+            document.add(new Paragraph("Total Deposits: " + totalDeposits));
+            document.add(new Paragraph("Total Withdrawals: " + totalWithdrawals));
+            document.add(new Paragraph("Total Loans Approved: " + totalLoansApproved));
+            document.add(new Paragraph("Total Outstanding Loans: " + outstandingLoans));
+            document.add(new Paragraph("Total Customer Complaints: " + totalComplaints));
+            document.add(new Paragraph("Unresolved Complaints: " + unresolvedComplaints));
+            document.add(new Paragraph("Total Transactions: " + totalTransactions));
+
+            document.add(new Paragraph("-------------------------------------"));
+
+            // Close the document
+            document.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new IOException("Error generating PDF", e);
+        }
+    }
 }

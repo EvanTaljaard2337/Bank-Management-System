@@ -1,13 +1,11 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package za.ac.tut.web;
 
-import java.io.BufferedWriter;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -63,16 +61,19 @@ public class ComplaintReportServlet extends HttpServlet {
             complaints = cfl.findAll();
         } else {
             // Apply filters
-            complaints = getComplaints(statusFilter,startDate,endDate);
+            complaints = getComplaints(statusFilter, startDate, endDate);
         }
-        
-        if("text".equals(export)){
-            exportToText(complaints,response);
+
+        if ("pdf".equals(export)) {
+            exportToPdf(complaints, response);
+            return; // Stop further processing after export
         }
+
         request.setAttribute("complaints", complaints);
         RequestDispatcher dispatcher = request.getRequestDispatcher("generate_complaint_report_outcome.jsp");
         dispatcher.forward(request, response);
     }
+
     private List<BmComplaint> getComplaints(String filter, Date startDate, Date endDate) {
         List<BmComplaint> complaints = cfl.findAll(); // Fetch all complaints
         List<BmComplaint> filteredComplaints = new ArrayList<>();
@@ -89,36 +90,41 @@ public class ComplaintReportServlet extends HttpServlet {
         }
         return filteredComplaints;
     }
-        // Method to export data to a text file
-    private void exportToText(List<BmComplaint> activities, HttpServletResponse response) throws IOException {
-        if (activities == null || activities.isEmpty()) {
+
+    // Method to export data to a PDF file
+    private void exportToPdf(List<BmComplaint> complaints, HttpServletResponse response) throws IOException {
+        if (complaints == null || complaints.isEmpty()) {
+            response.getWriter().write("No complaints found for export.");
             return;
         }
 
-        // Set the content type and attachment header for text file download
-        response.setContentType("text/plain");
-        response.setHeader("Content-Disposition", "attachment; filename=ComplaintReport.txt");
+        // Set the content type and attachment header for PDF file download
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "attachment; filename=ComplaintReport.pdf");
 
-        // Create a BufferedWriter to write to the response output stream
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(response.getOutputStream()));
+        try (OutputStream out = response.getOutputStream()) {
+            PdfWriter writer = new PdfWriter(out);
+            PdfDocument pdf = new PdfDocument(writer);
+            Document document = new Document(pdf);
 
-        // Write a title and timestamp to the file
-        writer.write("Complaint Report\n");
-        writer.write("Generated on: " + new java.util.Date() + "\n");
-        writer.write("=====================================\n");
+            document.add(new Paragraph("Complaint Report").setBold().setFontSize(18));
+            document.add(new Paragraph("Generated on: " + new java.util.Date()));
+            document.add(new Paragraph("=====================================\n"));
 
-        // Iterate over the list of activities and write them to the file
-        for (BmComplaint activity : activities) {
-            writer.write("Complaint ID: " + activity.getBComplaintid() + "\n");
-            writer.write("Description: " + activity.getBDescription()+ "\n");
-            writer.write("Status: " + activity.getBStatus() + "\n");
-            writer.write("Date: " + activity.getBCreatedat() + "\n");
-            writer.write("Date: " + activity.getBCustomerid().getBFullname() + "\n");
-            writer.write("-------------------------------------\n");
+            // Iterate over the list of complaints and write them to the PDF
+            for (BmComplaint complaint : complaints) {
+                document.add(new Paragraph("Complaint ID: " + complaint.getBComplaintid()));
+                document.add(new Paragraph("Description: " + complaint.getBDescription()));
+                document.add(new Paragraph("Status: " + complaint.getBStatus()));
+                document.add(new Paragraph("Date: " + complaint.getBCreatedat()));
+                document.add(new Paragraph("Customer: " + (complaint.getBCustomerid() != null ? complaint.getBCustomerid().getBFullname() : "Not available")));
+                document.add(new Paragraph("-------------------------------------\n"));
+            }
+
+            document.close();
+        } catch (Exception e) {
+            e.printStackTrace(); // Consider using a logging framework
+            throw new IOException("Error generating PDF", e);
         }
-
-        // Flush and close the writer
-        writer.flush();
-        writer.close();
     }
 }

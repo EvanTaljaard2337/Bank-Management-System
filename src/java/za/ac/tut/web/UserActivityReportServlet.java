@@ -4,26 +4,23 @@
  */
 package za.ac.tut.web;
 
-import static com.sun.xml.ws.security.addressing.impl.policy.Constants.logger;
-import java.io.BufferedWriter;
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import static javax.xml.bind.DatatypeConverter.parseDate;
-import za.ac.tut.ejb.bl.BmBankManagerFacadeLocal;
 import za.ac.tut.ejb.bl.BmSystemAdministratorFacadeLocal;
 import za.ac.tut.ejb.bl.UserActivityFacadeLocal;
-import za.ac.tut.entities.BmBankManager;
 import za.ac.tut.entities.BmSystemAdministrator;
 import za.ac.tut.entities.UserActivity;
 
@@ -58,7 +55,7 @@ public class UserActivityReportServlet extends HttpServlet {
         }
         if ("text".equals(export)) {
             List<UserActivity> activities = (List<UserActivity>) request.getSession().getAttribute("filteredActivities");
-            exportToText(activities, response);
+            exportToPdf(activities, response);
             return; // Exit early so it doesn't continue
         }
         else{
@@ -111,34 +108,39 @@ public class UserActivityReportServlet extends HttpServlet {
         return filteredActivities;
     }
     // Method to export data to a text file
-    private void exportToText(List<UserActivity> activities, HttpServletResponse response) throws IOException {
+ // Method to export data to a PDF file
+    private void exportToPdf(List<UserActivity> activities, HttpServletResponse response) throws IOException {
         if (activities == null || activities.isEmpty()) {
+            response.getWriter().write("No activities found for export.");
             return;
         }
 
-        // Set the content type and attachment header for text file download
-        response.setContentType("text/plain");
-        response.setHeader("Content-Disposition", "attachment; filename=UserActivityReport.txt");
+        // Set the content type and attachment header for PDF file download
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "attachment; filename=User ActivityReport.pdf");
 
-        // Create a BufferedWriter to write to the response output stream
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(response.getOutputStream()));
+        try (OutputStream out = response.getOutputStream()) {
+            PdfWriter writer = new PdfWriter(out);
+            PdfDocument pdf = new PdfDocument(writer);
+            Document document = new Document(pdf);
 
-        // Write a title and timestamp to the file
-        writer.write("User Activity Report\n");
-        writer.write("Generated on: " + new java.util.Date() + "\n");
-        writer.write("=====================================\n");
+            document.add(new Paragraph("User  Activity Report").setBold().setFontSize(18));
+            document.add(new Paragraph("Generated on: " + new java.util.Date()));
+            document.add(new Paragraph("=====================================\n"));
 
-        // Iterate over the list of activities and write them to the file
-        for (UserActivity activity : activities) {
-            writer.write("User ID: " + activity.getUserId() + "\n");
-            writer.write("Activity Type: " + activity.getActivityType() + "\n");
-            writer.write("Activity Time: " + activity.getActivityTime() + "\n");
-            writer.write("-------------------------------------\n");
+            // Iterate over the list of activities and write them to the PDF
+            for (UserActivity activity : activities) {
+                document.add(new Paragraph("User  ID: " + activity.getUserId()));
+                document.add(new Paragraph("Activity Type: " + activity.getActivityType()));
+                document.add(new Paragraph("Activity Time: " + activity.getActivityTime()));
+                document.add(new Paragraph("-------------------------------------\n"));
+            }
+
+            document.close();
+        } catch (Exception e) {
+            e.printStackTrace(); // Consider using a logging framework
+            throw new IOException("Error generating PDF", e);
         }
-
-        // Flush and close the writer
-        writer.flush();
-        writer.close();
     }
 
 }

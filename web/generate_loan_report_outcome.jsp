@@ -83,31 +83,36 @@
 
         .button-container {
             display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
+            justify-content: center; /* Center the buttons horizontally */
+            gap: 15px;
+            margin-top: 30px;
         }
-        .home-button, .export-button {
-            display: inline-block;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 16px;
-            transition: background-color 0.3s;
-        }
+        .export-button,
         .home-button {
             background-color: #007BFF;
             color: white;
             text-decoration: none;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
         }
+
+        .export-button:hover,
         .home-button:hover {
             background-color: #0056b3;
         }
-        .export-button {
-            background-color: #28a745;
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: #007BFF;
             color: white;
-            text-decoration: none;
-        }
-        .export-button:hover {
-            background-color: #218838;
+            font-size: 14px;
+            margin-top: 40px;
         }
     </style>
 </head>
@@ -159,24 +164,26 @@
             }
         %>
 
-        <a href="bankManagerDashboard.jsp" class="home-button">Back to Dashboard</a>
-        <% if (loans != null && !loans.isEmpty()) { %>
-            <form method="get" action="LoanReportServlet.do">
-                <input type="hidden" name="export" value="text">
-                <!-- Preserving filter parameters for the next export -->
-                <input type="hidden" name="loanStatus" value="<%= request.getParameter("loanStatus") != null ? request.getParameter("loanStatus") : "" %>">
-                <input type="hidden" name="loanType" value="<%= request.getParameter("loanType") != null ? request.getParameter("loanType") : "" %>">
-                <input type="hidden" name="minAmount" value="<%= request.getParameter("minAmount") != null ? request.getParameter("minAmount") : "" %>">
-                <input type="hidden" name="maxAmount" value="<%= request.getParameter("maxAmount") != null ? request.getParameter("maxAmount") : "" %>">
-                <input type="hidden" name="minInterestRate" value="<%= request.getParameter("minInterestRate") != null ? request.getParameter("minInterestRate") : "" %>">
-                <input type="hidden" name="maxInterestRate" value="<%= request.getParameter("maxInterestRate") != null ? request.getParameter("maxInterestRate") : "" %>">
-                 <input type="submit" value="Export as Text File" class="export-button">
-            </form>
-         <% } %>
+        <div class="button-container">
+            <a href="generate_loan_report.jsp" class="export-button">Back to filter</a>
+            <a href="bankManagerDashboard.jsp" class="home-button">Back to Dashboard</a>
+            <% if (loans != null && !loans.isEmpty()) { %>
+                <form method="get" action="LoanReportServlet.do">
+                    <input type="hidden" name="export" value="pdf">
+                    <input type="hidden" name="loanStatus" value="<%= request.getParameter("loanStatus") != null ? request.getParameter("loanStatus") : "" %>">
+                    <input type="hidden" name="loanType" value="<%= request.getParameter("loanType") != null ? request.getParameter("loanType") : "" %>">
+                    <input type="hidden" name="minAmount" value="<%= request.getParameter("minAmount") != null ? request.getParameter("minAmount") : "" %>">
+                    <input type="hidden" name="maxAmount" value="<%= request.getParameter("maxAmount") != null ? request.getParameter("maxAmount") : "" %>">
+                    <input type="hidden" name="minInterestRate" value="<%= request.getParameter("minInterestRate") != null ? request.getParameter("minInterestRate") : "" %>">
+                    <input type="hidden" name="maxInterestRate" value="<%= request.getParameter("maxInterestRate") != null ? request.getParameter("maxInterestRate") : "" %>">
+                    <button type="submit" class="export-button">Export as Pdf File</button>
+                </form>
+            <% } %>
+        </div>
     </div>
+
     <div class="footer">
         &copy; 2025 Your Bank Name | Manager Portal
     </div>
 </body>
 </html>
-

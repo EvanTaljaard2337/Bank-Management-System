@@ -41,4 +41,5 @@ public class checkBalanceServlet extends HttpServlet {
         RequestDispatcher disp = request.getRequestDispatcher("account_balance.jsp");
         disp.forward(request, response);
     }
+    
 }

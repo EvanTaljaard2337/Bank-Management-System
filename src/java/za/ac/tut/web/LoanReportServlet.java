@@ -4,8 +4,13 @@
  */
 package za.ac.tut.web;
 
+import com.itextpdf.kernel.pdf.PdfDocument;
+import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.layout.Document;
+import com.itextpdf.layout.element.Paragraph;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.math.BigDecimal;
@@ -20,6 +25,7 @@ import za.ac.tut.ejb.bl.BmCustomerFacadeLocal;
 import za.ac.tut.ejb.bl.BmLoanFacadeLocal;
 import za.ac.tut.entities.BmCustomer;
 import za.ac.tut.entities.BmLoan;
+import za.ac.tut.entities.BmTransaction;
 
 /**
  *
@@ -60,14 +66,14 @@ public class LoanReportServlet extends HttpServlet {
             // Fetch filtered loans
             List<BmLoan> loans = getLoansByFilter(loanId, customerName, minAmount, maxAmount, minInterest, maxInterest, loanStatus, loanType);
 
-            if("text".equals(export)){
-                exportToText(loans,response);
+            if ("pdf".equals(export)) {
+                exportToPdf(loans, response);
+                return; // Stop further processing after export
             }
             // Set attributes for JSP
             request.setAttribute("loans", loans);
-
             // Forward to JSP
-            request.getRequestDispatcher("generate_loan_report_outcome.jsp").forward(request, response);
+            request.getRequestDispatcher("generate_loan_report_outcome.jsp").forward(request, response); 
         }
         catch(Exception e){
             e.printStackTrace();
@@ -143,37 +149,38 @@ public class LoanReportServlet extends HttpServlet {
         }
         return null; // Return null if the value is empty
     }
-    private void exportToText(List<BmLoan> activities, HttpServletResponse response) throws IOException {
-        if (activities == null || activities.isEmpty()) {
+    private void exportToPdf(List<BmLoan> loans, HttpServletResponse response) throws IOException {
+        if (loans == null || loans.isEmpty()) {
+            response.getWriter().write("No loans found for export.");
             return;
         }
 
-        // Set the content type and attachment header for text file download
-        response.setContentType("text/plain");
-        response.setHeader("Content-Disposition", "attachment; filename=LoanReport.txt");
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", "attachment; filename=Loan_Report.pdf");
 
-        // Use try-with-resources to handle the BufferedWriter and close it automatically
-        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(response.getOutputStream()))) {
+        try (OutputStream out = response.getOutputStream()) {
+            PdfWriter writer = new PdfWriter(out);
+            PdfDocument pdf = new PdfDocument(writer);
+            Document document = new Document(pdf);
 
-            // Write a title and timestamp to the file
-            writer.write("Loan Report\n");
-            writer.write("Generated on: " + new java.util.Date() + "\n");
-            writer.write("=====================================\n");
+            document.add(new Paragraph("Loan Report").setBold().setFontSize(18));
+            document.add(new Paragraph("Generated on: " + java.time.LocalDateTime.now()));
+            document.add(new Paragraph("=====================================\n"));
 
-            // Iterate over the list of activities and write them to the file
-            for (BmLoan loan : activities) {
-                writer.write("Loan ID: " + loan.getBLoanid() + "\n");
-                writer.write("Customer ID: " + loan.getBCustomerid() + "\n");
-                writer.write("Loan Amount: " + loan.getBLoanamount() + "\n");
-                writer.write("Interest Rate: " + loan.getBInterestrate() + "\n");
-                writer.write("Status: " + loan.getBStatus() + "\n");
-                writer.write("Loan Type: " + loan.getbLoanType() + "\n");
-                writer.write("-------------------------------------\n");
+            for (BmLoan loan : loans) {
+                document.add(new Paragraph("Loan ID: " + (loan.getBLoanid() != null ? loan.getBLoanid() : "Not available")));
+                document.add(new Paragraph("Customer ID: " + (loan.getBCustomerid() != null ? loan.getBCustomerid() : "Not available")));
+                document.add(new Paragraph("Loan Amount: " + loan.getBLoanamount()));
+                document.add(new Paragraph("Interest Rate: " + loan.getBInterestrate()));
+                document.add(new Paragraph("Status: " + loan.getBStatus()));
+                document.add(new Paragraph("Loan Type: " + loan.getbLoanType()));
+                document.add(new Paragraph("-------------------------------------\n"));
             }
-        } catch (IOException e) {
-            // Log the exception and handle it appropriately
-            e.printStackTrace();
-            throw new IOException("Error exporting loan data", e);
+
+            document.close();
+        } catch (Exception e) {
+            e.printStackTrace(); // Consider using a logging framework
+            throw new IOException("Error generating PDF", e);
         }
     }
 

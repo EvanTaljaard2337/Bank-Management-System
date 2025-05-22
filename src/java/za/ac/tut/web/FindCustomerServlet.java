@@ -31,7 +31,8 @@ public class FindCustomerServlet extends HttpServlet {
         BmCustomer bmc = bcf.find(custId);
         request.setAttribute("customer",bmc);
         
-        RequestDispatcher disp = request.getRequestDispatcher("display_customer_account.jsp");
+        //RequestDispatcher disp = request.getRequestDispatcher("display_customer_account.jsp");
+        RequestDispatcher disp = request.getRequestDispatcher("update_customer.jsp");
         disp.forward(request,response);
     }
 }

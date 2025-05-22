@@ -60,7 +60,7 @@
         .balance-amount {
             font-size: 36px;
             font-weight: bold;
-            color: #28a745;
+            color: #007bff;
             margin: 10px 0;
         }
         .account-status {
@@ -114,22 +114,50 @@
 
                 if (hasActive) {
         %>
-                    <h2>Active Accounts</h2>
+        <h2>Active Accounts</h2>
         <%
-                    for (BmAccount acc : accountList) {
-                        if (!"Pending".equals(acc.getBStatus())) {
+            boolean foundActive = false;
+            for (BmAccount acc : accountList) {
+                if ("Active".equals(acc.getBStatus())) {
+                    foundActive = true;
         %>
-                            <div class="account-card">
-                                <p class="balance-label">Account Type: <b><%= acc.getBAccounttype() %></b></p>
-                                <p class="balance-amount">R <%= acc.getBBalance() != null ? String.format("%,.2f", acc.getBBalance()) : "0.00" %></p>
-                                <p class="account-status">Status: <b><%= acc.getBStatus() %></b></p>
-                            </div>
+                    <div class="account-card">
+                        <p class="balance-label">Account Type: <b><%= acc.getBAccounttype() %></b></p>
+                        <p class="balance-amount">R <%= acc.getBBalance() != null ? String.format("%,.2f", acc.getBBalance()) : "0.00" %></p>
+                        <p class="account-status">Status: <b><%= acc.getBStatus() %></b></p>
+                    </div>
         <%
-                        }
-                    }
-                } else {
+                }
+            }
+            if (!foundActive) {
         %>
-                    <p>No approved accounts found.</p>
+                <p>No active accounts found.</p>
+        <%
+            }
+        %>
+
+        <h2>Inactive Accounts</h2>
+        <%
+            boolean foundInactive = false;
+            for (BmAccount acc : accountList) {
+                if ("Inactive".equals(acc.getBStatus())) {
+                    foundInactive = true;
+        %>
+                    <div class="account-card">
+                        <p class="balance-label">Account Type: <b><%= acc.getBAccounttype() %></b></p>
+                        <p class="balance-amount">R <%= acc.getBBalance() != null ? String.format("%,.2f", acc.getBBalance()) : "0.00" %></p>
+                        <p class="account-status">Status: <b><%= acc.getBStatus() %></b></p>
+                    </div>
+        <%
+                }
+            }
+            if (!foundInactive) {
+        %>
+                <p>No inactive accounts found.</p>
+        <%
+            }
+        %>
+
         <%
                 }
 
