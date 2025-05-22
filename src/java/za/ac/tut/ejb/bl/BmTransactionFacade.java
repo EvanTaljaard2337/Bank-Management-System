@@ -4,8 +4,6 @@
  * and open the template in the editor.
  */
 package za.ac.tut.ejb.bl;
-
-import static com.sun.tools.javac.tree.TreeInfo.name;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
