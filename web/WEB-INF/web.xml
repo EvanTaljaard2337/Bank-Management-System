@@ -164,6 +164,14 @@
         <servlet-name>DeleteEmployeePage</servlet-name>
         <servlet-class>za.ac.tut.web.DeleteEmployeePage</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>CustomerDashboardServlet</servlet-name>
+        <servlet-class>za.ac.tut.web.CustomerDashboardServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>GenerateTransactionHistoryServlet</servlet-name>
+        <servlet-class>za.ac.tut.web.GenerateTransactionHistoryServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>RegisterServlet</servlet-name>
         <url-pattern>/RegisterServlet.do</url-pattern>
@@ -351,6 +359,14 @@
     <servlet-mapping>
         <servlet-name>DeleteEmployeePage</servlet-name>
         <url-pattern>/DeleteEmployeePage.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>CustomerDashboardServlet</servlet-name>
+        <url-pattern>/CustomerDashboardServlet.do</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>GenerateTransactionHistoryServlet</servlet-name>
+        <url-pattern>/GenerateTransactionHistoryServlet.do</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

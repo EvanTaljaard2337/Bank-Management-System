@@ -11,6 +11,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Customer Dashboard</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
         <style>
             body {
                 font-family: Arial, sans-serif;
@@ -113,7 +114,26 @@
                 background: #007BFF;
                 color: white;
                 font-size: 14px;
-                margin-top: 40px;
+                margin-top: 20px;
+            }
+            .social-media {
+                margin-top: 10px;
+            }
+            .social-media a {
+                color: white;
+                margin: 0 10px;
+                font-size: 20px;
+                text-decoration: none;
+                vertical-align: middle;
+                transition: color 0.3s;
+            }
+            .social-media a:hover {
+                color: #d4d4d4;
+            }
+            .social-media span {
+                margin-left: 6px;
+                vertical-align: middle;
+                font-size: 14px;
             }
             @media (max-width: 768px) {
                 .container {
@@ -166,11 +186,15 @@
     </head>
     <body>
         <%
-            BmCustomer c = (BmCustomer)session.getAttribute("customer");  
+            BmCustomer c = (BmCustomer)session.getAttribute("customer");
+            if(c == null){
+                response.sendRedirect("index.html");
+                return;
+            }
         %>
         <div class="header">
             <h1>Welcome, <%=c.getBFullname()%></h1>
-            <form action="logoutServlet.do" method="POST">
+            <form action="index.html">
                 <input type="submit" class="header-logout" value="Logout">
             </form>
             <!--<a href="logoutServlet.do" method="POST" class="header-logout">Logout</a>-->
@@ -208,6 +232,20 @@
         </div>
         <div class="footer">
             &copy; 2025 BMS | Contact Support: support@bms.com | Phone: 123-456-7890
+            <div class="social-media">
+                <a href="https://x.com/Nedbank?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor" target="_blank" aria-label="X Social Media">
+                    <i class="fab fa-twitter"></i><span>X</span>
+                </a>
+                <a href="https://github.com/EvanTaljaard2337/Bank-Management-System" target="_blank" aria-label="Facebook">
+                    <i class="fab fa-facebook-f"></i><span>Facebook</span>
+                </a>
+                <a href="https://github.com/EvanTaljaard2337/Bank-Management-System" target="_blank" aria-label="Instagram">
+                    <i class="fab fa-instagram"></i><span>Instagram</span>
+                </a>
+                <a href="https://github.com/EvanTaljaard2337/Bank-Management-System" target="_blank" aria-label="GitHub">
+                    <i class="fab fa-github"></i><span>GitHub</span>
+                </a>
+            </div>
         </div>
     </body>
 </html>
